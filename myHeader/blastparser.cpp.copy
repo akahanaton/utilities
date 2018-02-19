@@ -1,0 +1,1175 @@
+/***************************************************************************
+ *   Copyright (C) 2008 by wenming   *
+ *   wenming@genomics.org.cn   *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+#include "blastparser.h"
+
+
+////////////////// member of class blastParser ///////////////////
+blastParser::blastParser()
+{
+}
+
+blastParser::~blastParser()
+{
+}
+
+void blastParser::AddBlast8Query(BLAST8RESULT input_result)
+{
+  BlastResults.push_back(input_result);
+}
+
+BLAST8RESULT blastParser::ReadBlast8SigleLine( string input_line,float input_identity )
+{
+   /// pre: DNA sequence have been readed (to set the QLen)
+   /// pose: Read the blast results, and set the QLen
+//chr10  chr10  100.00  240   0     0     1     240     1242449 1242688 5.0e-132   468.0
+  BLAST8RESULT tmpResult;
+
+  typedef vector< string > split_vector_type;
+  split_vector_type SplitVec; // #2: Search for tokens
+  boost::split( SplitVec, input_line, boost::is_any_of("\t") );
+
+  // check Indentity first to save time
+  tmpResult.Identity = boost::lexical_cast<float>(SplitVec.at(2));
+  if (tmpResult.Identity < input_identity)
+     return tmpResult;
+  else
+  {
+  //cout << "inputline" << inputline << endl;
+  tmpResult.QueryID = SplitVec.at(0);
+  //cout << "msg1" << msg1 << endl;
+
+  tmpResult.SubjectID = SplitVec.at(1);
+ // cout << "msg2" << msg2 << endl;
+
+  tmpResult.AlignmentLength = boost::lexical_cast<int>(SplitVec.at(3));
+  //cout << "msg4" << msg4 << endl;
+
+  tmpResult.Mismatches = boost::lexical_cast<int>(SplitVec.at(4));
+  //cout << "msg5" << msg5 << endl;
+
+  tmpResult.GapOpenings = boost::lexical_cast<int>(SplitVec.at(5));
+  //cout << "msg6" << msg6 << endl;
+
+  tmpResult.QStart = boost::lexical_cast<int>(SplitVec.at(6));
+  //cout << "msg7" << msg7 << endl;
+
+  tmpResult.QEnd = boost::lexical_cast<int>(SplitVec.at(7));
+  //cout << "msg8" << msg8 << endl;
+
+  tmpResult.SStart = boost::lexical_cast<int>(SplitVec.at(8));
+  //cout << "msg9" << msg9 << endl;
+
+  tmpResult.SEnd = boost::lexical_cast<int>(SplitVec.at(9));
+  //cout << "msg10   " << msg10 << endl;
+
+  //cout << "msg11   " << msg11 << endl;
+  tmpResult.Expect = boost::lexical_cast<double>(SplitVec.at(10));
+
+  //string msg12( what[12].first, what[12].second );
+  //cout << "msg12" << msg12.length() << endl;
+  //tmpResult.BitScore = boost::lexical_cast<int>(msg12);
+  //cout << "msg12" << tmpResult.BitScore << endl;
+
+  if (tmpResult.SStart < tmpResult.SEnd)
+    tmpResult.RComplement = false;
+  else
+	{
+    tmpResult.RComplement = true;
+    myswap(tmpResult.SStart, tmpResult.SEnd);
+		}
+  //if (! Reads.empty() )
+    tmpResult.QLen = Reads[tmpResult.QueryID].length();
+  //else
+    //tmpResult.QLen =0;
+   return tmpResult;
+   }
+}
+
+void blastParser::ReadBlast8Result(char *resultfile,float input_identity)
+{
+   /// pre: DNA sequence have been readed (to set the QLen)
+   /// pose: Read the blast results, and set the QLen
+    try
+    {
+      ifstream Fin(resultfile);
+      if(!Fin) throw strcat("Cannot open input Fasta file ", resultfile);
+
+      string buf;
+      BLAST8RESULT tmpresult;
+
+      for(;;)
+       {
+       getline(Fin, buf);
+	     if (Fin.eof())
+           break;
+       else
+				{
+          tmpresult = ReadBlast8SigleLine( buf, input_identity);
+          if (tmpresult.QueryID != "")
+             AddQuery(tmpresult);
+        }
+       }/// end for
+     } /// end try
+    catch(char* pMsg) { cerr << endl << "Exception:" << pMsg << endl; }
+}
+
+void blastParser::MapReadsToRef( char *out_filename, float input_identity)
+{
+  /// pre:  blast results, Reads and Reference sequence have been read in
+  /// post: according to the blast results, reads are mapped to the reference
+  ///       and a map sequence writte into the file out_filename
+
+
+  /// firstly:  check the reads and reference sequence are not empty
+   if( RefSeq.empty() || Reads.empty() )
+  {
+    cout << "Map need enter the reads sequence, exit now!" << endl;
+    return ;
+  }
+
+   /// Secondly: processing the blast result
+   /// step 1: remove the short aligned reads , less than 90%;
+   /// step 2: sort the blast result by SStart (Subject Start loc);
+   /// step 3: remove the repeats,according to the SStart;
+
+  unsigned int QueryNum = BlastResults.size();
+  cout << "before UniqByQueryID " << QueryNum << endl;
+
+  UniqByQueryID();
+  QueryNum = BlastResults.size();
+  cout << "after UniqByQueryID " << QueryNum << endl;
+
+
+  cout << "\t\tbegin Remove Short Align Results"<< endl;
+  QueryNum = BlastResults.size();
+  //for (int i = 0; i < QueryNum; i++)
+      //cout << BlastResults.at(i).QueryID<< endl;
+      cout << QueryNum << endl;
+
+  /// step 1
+  // RmShortAlignReads();
+
+  cout << "\t\tafter Remove Short Align Results"<< endl;
+  QueryNum = BlastResults.size();
+//   for (int i = 0; i < QueryNum; i++)
+//       cout << BlastResults.at(i).QueryID<< endl;
+//       cout << QueryNum << endl;
+
+  /// step 2
+   sort(BlastResults.begin(), BlastResults.end(),less_by_SStart());
+
+
+   cout << "\t\tafter sort  ";
+//     for (int i = 0; i < QueryNum; i++)
+//       cout << BlastResults.at(i).QueryID << "\t\t" <<BlastResults.at(i).SStart << "\t\t"<<BlastResults.at(i).SEnd << endl;
+    cout << BlastResults.size()<< endl;
+
+
+  /// step 3
+  RmRepeatReads();
+
+  cout << "\t\tafter remove repeat "<< endl;
+
+  QueryNum = BlastResults.size();
+//     for (int i = 0; i < QueryNum; i++)
+//       cout << BlastResults.at(i).QueryID << "\t\t" <<BlastResults.at(i).SStart << "\t\t"<<BlastResults.at(i).SEnd << endl;
+    cout <<"useful blast result: " <<BlastResults.size()<< endl;
+
+
+  /// thirdly: begin map
+  /// need change for multiseq
+
+  string myMapSeq, tmp_id,tmp_seq1, tmp_seq2;
+  vector<BLAST8RESULT>:: iterator cur_it,blast_it;
+  int i = 1;
+
+  blast_it = BlastResults.begin(); /// the first reference
+  if ( blast_it->SStart > 0 )
+    myMapSeq.append( blast_it->SStart -1 ,'X');
+  if( blast_it->RComplement )
+  {
+    tmp_seq1 = Reads[blast_it->QueryID].substr(blast_it->QStart - 1, blast_it->AlignmentLength );
+    myMapSeq.append( tmp_seq1 );
+  }
+  if(blast_it->RComplement)
+    {
+      tmp_seq1 = Reads[blast_it->QueryID].substr(blast_it->QStart - 1 , blast_it->AlignmentLength );
+      /// reverse compliment
+      reverse_copy(tmp_seq1.begin(), tmp_seq1.end(), tmp_seq2.begin());
+      transform(tmp_seq2.begin(), tmp_seq2.end(), tmp_seq1.begin(),compliment_nucleotide);
+    } /// end if RComplement
+      else
+    {
+        tmp_seq1 = Reads[blast_it->QueryID].substr(blast_it->QStart - 1,blast_it->AlignmentLength);
+    }
+    cout << "map  " << i++ << "\t" <<blast_it->QueryID << "\t" << tmp_seq1.length() << endl;
+    myMapSeq.append(tmp_seq1);
+
+
+  cur_it = blast_it + 1;
+  for ( ; cur_it != BlastResults.end()-1; cur_it++)
+     {
+     if ( cur_it->SStart > blast_it->SEnd )
+     {
+        myMapSeq.append( cur_it->SStart - blast_it->SEnd ,'X');
+     }
+     else
+     {
+        cur_it->SStart = blast_it->SEnd + 1;
+        cur_it->QStart = cur_it->QStart + blast_it->SEnd - cur_it->SStart + 1;
+     }
+     blast_it++;
+
+     tmp_id =cur_it->QueryID;
+
+      if( cur_it->RComplement )
+      {
+      tmp_seq1 = Reads[tmp_id].substr(cur_it->QStart - 1, cur_it->QEnd - cur_it->QStart + 1 );
+      /// reverse compliment
+      reverse_copy(tmp_seq1.begin(), tmp_seq1.end(), tmp_seq2.begin());
+      transform(tmp_seq2.begin(), tmp_seq2.end(), tmp_seq1.begin(),compliment_nucleotide);
+      }
+      else
+      {
+        tmp_seq1 = Reads[tmp_id].substr(cur_it->QStart - 1, cur_it->QEnd - cur_it->QStart + 1 );
+      }
+
+
+      //cout << "map" << i++ << "\t" << cur_it->QueryID << "\t" << tmp_seq1.length() << endl;
+      //cout << tmp_seq1 <<endl;
+      myMapSeq.append( tmp_seq1 );
+    } /// end for
+
+  if(BlastResults.back().SEnd > blast_it->SStart )
+  {
+      myMapSeq.append( BlastResults.back().SStart - blast_it->SEnd ,'X');
+  }
+  else
+  {
+        BlastResults.back().SStart = blast_it->SEnd + 1;
+        BlastResults.back().QStart = BlastResults.back().QStart +
+				     blast_it->SEnd - BlastResults.back().SStart + 1;
+  }
+  tmp_id = BlastResults.back().QueryID;
+
+  if( BlastResults.back().RComplement )
+  {
+  tmp_seq1 = Reads[tmp_id].substr(BlastResults.back().QStart - 1,
+                                BlastResults.back().QEnd - BlastResults.back().QStart + 1 );
+  /// reverse compliment
+  reverse_copy(tmp_seq1.begin(), tmp_seq1.end(), tmp_seq2.begin());
+  transform(tmp_seq2.begin(), tmp_seq2.end(), tmp_seq1.begin(),compliment_nucleotide);
+  }
+  else
+  {
+    tmp_seq1 = Reads[tmp_id].substr(BlastResults.back().QStart - 1,
+                                  BlastResults.back().QEnd - BlastResults.back().QStart + 1 );
+  }
+
+  cout << cur_it->QueryID << "\t" << BlastResults.back().QueryID<<endl;
+  cout << "last map " << i++ << "\t" << tmp_id << "\t" << tmp_seq1.length() << endl;
+  myMapSeq.append( tmp_seq1 );
+
+  if ( BlastResults.back().SEnd < RefSeq.begin()->second.length() ) /// back() return the last reference
+   myMapSeq.append( RefSeq.begin()->second.length() - BlastResults.back().SEnd ,'X');
+
+    cout << "Ref Seq length:" <<  RefSeq.begin()->second.length() << endl;
+    cout << "my mapped seq len " <<myMapSeq.length() << endl;
+    tmp_id = "my ref seq";
+    DNA myRefDna;
+    myRefDna.addChain( tmp_id, tmp_id, myMapSeq );
+    myRefDna.writeFasta( out_filename );
+    myRefDna.oligoCount( 0,1);
+}
+
+void blastParser::SetReads( char *infile )
+{
+    DNA tmpDna;
+    tmpDna.readFasta( infile );
+    unsigned int readnum = tmpDna.getChainNum();
+    for (unsigned int i = 0; i < readnum; i++ )
+      Reads.insert(map<string, string>::value_type(tmpDna.chain.at(i).id, tmpDna.chain.at(i).seq));
+}
+
+void blastParser::SetRefSeq( char *infile )
+{
+    DNA tmpDna;
+    tmpDna.readFasta( infile );
+    unsigned int readnum = tmpDna.getChainNum();
+    for (unsigned int i = 0; i < readnum; i++ )
+      RefSeq.insert(map<string, string>::value_type(tmpDna.chain.at(i).id, tmpDna.chain.at(i).seq));
+}
+//void blastParser::MapLenLonger(int inputratio)
+
+void blastParser::UniqByQueryID( )
+{
+  if (BlastResults.size() > 0 )
+  {
+      vector<BLAST8RESULT>::iterator it;
+       it = unique( BlastResults.begin(), BlastResults.end(), equal_by_QueryID_SStart());
+       BlastResults.resize( it - BlastResults.begin());
+  }
+}
+
+
+/***************************************************************************
+ *   Copyright (C) 2008 by wenming   *
+ *   wenming@genomics.org.cn   *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+BLAST8RESULT blastParser::ReadBlast8SigleLine( string input_line,float input_identity )
+{
+   /// pre: DNA sequence have been readed (to set the QLen)
+   /// pose: Read the blast results, and set the QLen
+//chr10  chr10  100.00  240   0     0     1     240     1242449 1242688 5.0e-132   468.0
+  BLAST8RESULT tmpResult;
+
+  typedef vector< string > split_vector_type;
+  split_vector_type SplitVec; // #2: Search for tokens
+  boost::split( SplitVec, input_line, boost::is_any_of("\t") );
+
+  // check Indentity first to save time
+  tmpResult.Identity = boost::lexical_cast<float>(SplitVec.at(2));
+  if (tmpResult.Identity < input_identity)
+     return tmpResult;
+  else
+  {
+  //cout << "inputline" << inputline << endl;
+  tmpResult.QueryID = SplitVec.at(0);
+  //cout << "msg1" << msg1 << endl;
+
+  tmpResult.SubjectID = SplitVec.at(1);
+ // cout << "msg2" << msg2 << endl;
+
+  tmpResult.AlignmentLength = boost::lexical_cast<int>(SplitVec.at(3));
+  //cout << "msg4" << msg4 << endl;
+
+  tmpResult.Mismatches = boost::lexical_cast<int>(SplitVec.at(4));
+  //cout << "msg5" << msg5 << endl;
+
+  tmpResult.GapOpenings = boost::lexical_cast<int>(SplitVec.at(5));
+  //cout << "msg6" << msg6 << endl;
+
+  tmpResult.QStart = boost::lexical_cast<int>(SplitVec.at(6));
+  //cout << "msg7" << msg7 << endl;
+
+  tmpResult.QEnd = boost::lexical_cast<int>(SplitVec.at(7));
+  //cout << "msg8" << msg8 << endl;
+
+  tmpResult.SStart = boost::lexical_cast<int>(SplitVec.at(8));
+  //cout << "msg9" << msg9 << endl;
+
+  tmpResult.SEnd = boost::lexical_cast<int>(SplitVec.at(9));
+  //cout << "msg10   " << msg10 << endl;
+
+  //cout << "msg11   " << msg11 << endl;
+  tmpResult.Expect = boost::lexical_cast<double>(SplitVec.at(10));
+
+  //string msg12( what[12].first, what[12].second );
+  //cout << "msg12" << msg12.length() << endl;
+  //tmpResult.BitScore = boost::lexical_cast<int>(msg12);
+  //cout << "msg12" << tmpResult.BitScore << endl;
+
+  if (tmpResult.SStart < tmpResult.SEnd)
+    tmpResult.RComplement = false;
+  else
+	{
+    tmpResult.RComplement = true;
+    myswap(tmpResult.SStart, tmpResult.SEnd);
+		}
+  //if (! Reads.empty() )
+    tmpResult.QLen = Reads[tmpResult.QueryID].length();
+  //else
+    //tmpResult.QLen =0;
+   return tmpResult;
+   }
+}
+
+void blastParser::ReadBlast8Result(char *resultfile,float input_identity)
+{
+   /// pre: DNA sequence have been readed (to set the QLen)
+   /// pose: Read the blast results, and set the QLen
+    try
+    {
+      ifstream Fin(resultfile);
+      if(!Fin) throw strcat("Cannot open input Fasta file ", resultfile);
+
+      string buf;
+      BLAST8RESULT tmpresult;
+
+      for(;;)
+       {
+       getline(Fin, buf);
+	     if (Fin.eof())
+           break;
+       else
+				{
+          tmpresult = ReadBlast8SigleLine( buf, input_identity);
+          if (tmpresult.QueryID != "")
+             AddBlast8Query(tmpresult);
+        }
+       }/// end for
+     } /// end try
+    catch(char* pMsg) { cerr << endl << "Exception:" << pMsg << endl; }
+}
+
+void blastParser::MapReadsToRef( char *out_filename, float input_identity)
+{
+  /// pre:  blast results, Reads and Reference sequence have been read in
+  /// post: according to the blast results, reads are mapped to the reference
+  ///       and a map sequence writte into the file out_filename
+
+
+  /// firstly:  check the reads and reference sequence are not empty
+   if( RefSeq.empty() || Reads.empty() )
+  {
+    cout << "Map need enter the reads sequence, exit now!" << endl;
+    return ;
+  }
+
+   /// Secondly: processing the blast result
+   /// step 1: remove the short aligned reads , less than 90%;
+   /// step 2: sort the blast result by SStart (Subject Start loc);
+   /// step 3: remove the repeats,according to the SStart;
+
+  unsigned int QueryNum = BlastResults.size();
+  cout << "before UniqByQueryID " << QueryNum << endl;
+
+  UniqByQueryID();
+  QueryNum = BlastResults.size();
+  cout << "after UniqByQueryID " << QueryNum << endl;
+
+
+  cout << "\t\tbegin Remove Short Align Results"<< endl;
+  QueryNum = BlastResults.size();
+  //for (int i = 0; i < QueryNum; i++)
+      //cout << BlastResults.at(i).QueryID<< endl;
+      cout << QueryNum << endl;
+
+  /// step 1
+  // RmShortAlignReads();
+
+  cout << "\t\tafter Remove Short Align Results"<< endl;
+  QueryNum = BlastResults.size();
+//   for (int i = 0; i < QueryNum; i++)
+//       cout << BlastResults.at(i).QueryID<< endl;
+//       cout << QueryNum << endl;
+
+  /// step 2
+   sort(BlastResults.begin(), BlastResults.end(),less_by_SStart());
+
+
+   cout << "\t\tafter sort  ";
+//     for (int i = 0; i < QueryNum; i++)
+//       cout << BlastResults.at(i).QueryID << "\t\t" <<BlastResults.at(i).SStart << "\t\t"<<BlastResults.at(i).SEnd << endl;
+    cout << BlastResults.size()<< endl;
+
+
+  /// step 3
+  RmRepeatReads();
+
+  cout << "\t\tafter remove repeat "<< endl;
+
+  QueryNum = BlastResults.size();
+//     for (int i = 0; i < QueryNum; i++)
+//       cout << BlastResults.at(i).QueryID << "\t\t" <<BlastResults.at(i).SStart << "\t\t"<<BlastResults.at(i).SEnd << endl;
+    cout <<"useful blast result: " <<BlastResults.size()<< endl;
+
+
+  /// thirdly: begin map
+  /// need change for multiseq
+
+  string myMapSeq, tmp_id,tmp_seq1, tmp_seq2;
+  vector<BLAST8RESULT>:: iterator cur_it,blast_it;
+  int i = 1;
+
+  blast_it = BlastResults.begin(); /// the first reference
+  if ( blast_it->SStart > 0 )
+    myMapSeq.append( blast_it->SStart -1 ,'X');
+  if( blast_it->RComplement )
+  {
+    tmp_seq1 = Reads[blast_it->QueryID].substr(blast_it->QStart - 1, blast_it->AlignmentLength );
+    myMapSeq.append( tmp_seq1 );
+  }
+  if(blast_it->RComplement)
+    {
+      tmp_seq1 = Reads[blast_it->QueryID].substr(blast_it->QStart - 1 , blast_it->AlignmentLength );
+      /// reverse compliment
+      reverse_copy(tmp_seq1.begin(), tmp_seq1.end(), tmp_seq2.begin());
+      transform(tmp_seq2.begin(), tmp_seq2.end(), tmp_seq1.begin(),compliment_nucleotide);
+    } /// end if RComplement
+      else
+    {
+        tmp_seq1 = Reads[blast_it->QueryID].substr(blast_it->QStart - 1,blast_it->AlignmentLength);
+    }
+    cout << "map  " << i++ << "\t" <<blast_it->QueryID << "\t" << tmp_seq1.length() << endl;
+    myMapSeq.append(tmp_seq1);
+
+
+  cur_it = blast_it + 1;
+  for ( ; cur_it != BlastResults.end()-1; cur_it++)
+     {
+     if ( cur_it->SStart > blast_it->SEnd )
+     {
+        myMapSeq.append( cur_it->SStart - blast_it->SEnd ,'X');
+     }
+     else
+     {
+        cur_it->SStart = blast_it->SEnd + 1;
+        cur_it->QStart = cur_it->QStart + blast_it->SEnd - cur_it->SStart + 1;
+     }
+     blast_it++;
+
+     tmp_id =cur_it->QueryID;
+
+      if( cur_it->RComplement )
+      {
+      tmp_seq1 = Reads[tmp_id].substr(cur_it->QStart - 1, cur_it->QEnd - cur_it->QStart + 1 );
+      /// reverse compliment
+      reverse_copy(tmp_seq1.begin(), tmp_seq1.end(), tmp_seq2.begin());
+      transform(tmp_seq2.begin(), tmp_seq2.end(), tmp_seq1.begin(),compliment_nucleotide);
+      }
+      else
+      {
+        tmp_seq1 = Reads[tmp_id].substr(cur_it->QStart - 1, cur_it->QEnd - cur_it->QStart + 1 );
+      }
+
+
+      //cout << "map" << i++ << "\t" << cur_it->QueryID << "\t" << tmp_seq1.length() << endl;
+      //cout << tmp_seq1 <<endl;
+      myMapSeq.append( tmp_seq1 );
+    } /// end for
+
+  if(BlastResults.back().SEnd > blast_it->SStart )
+  {
+      myMapSeq.append( BlastResults.back().SStart - blast_it->SEnd ,'X');
+  }
+  else
+  {
+        BlastResults.back().SStart = blast_it->SEnd + 1;
+        BlastResults.back().QStart = BlastResults.back().QStart +
+				     blast_it->SEnd - BlastResults.back().SStart + 1;
+  }
+  tmp_id = BlastResults.back().QueryID;
+
+  if( BlastResults.back().RComplement )
+  {
+  tmp_seq1 = Reads[tmp_id].substr(BlastResults.back().QStart - 1,
+                                BlastResults.back().QEnd - BlastResults.back().QStart + 1 );
+  /// reverse compliment
+  reverse_copy(tmp_seq1.begin(), tmp_seq1.end(), tmp_seq2.begin());
+  transform(tmp_seq2.begin(), tmp_seq2.end(), tmp_seq1.begin(),compliment_nucleotide);
+  }
+  else
+  {
+    tmp_seq1 = Reads[tmp_id].substr(BlastResults.back().QStart - 1,
+                                  BlastResults.back().QEnd - BlastResults.back().QStart + 1 );
+  }
+
+  cout << cur_it->QueryID << "\t" << BlastResults.back().QueryID<<endl;
+  cout << "last map " << i++ << "\t" << tmp_id << "\t" << tmp_seq1.length() << endl;
+  myMapSeq.append( tmp_seq1 );
+
+  if ( BlastResults.back().SEnd < RefSeq.begin()->second.length() ) /// back() return the last reference
+   myMapSeq.append( RefSeq.begin()->second.length() - BlastResults.back().SEnd ,'X');
+
+    cout << "Ref Seq length:" <<  RefSeq.begin()->second.length() << endl;
+    cout << "my mapped seq len " <<myMapSeq.length() << endl;
+    tmp_id = "my ref seq";
+    DNA myRefDna;
+    myRefDna.addChain( tmp_id, tmp_id, myMapSeq );
+    myRefDna.writeFasta( out_filename );
+    myRefDna.oligoCount( 0,1);
+}
+
+void blastParser::SetReads( char *infile )
+{
+    DNA tmpDna;
+    tmpDna.readFasta( infile );
+    unsigned int readnum = tmpDna.getChainNum();
+    for (unsigned int i = 0; i < readnum; i++ )
+      Reads.insert(map<string, string>::value_type(tmpDna.chain.at(i).id, tmpDna.chain.at(i).seq));
+}
+
+void blastParser::SetRefSeq( char *infile )
+{
+    DNA tmpDna;
+    tmpDna.readFasta( infile );
+    unsigned int readnum = tmpDna.getChainNum();
+    for (unsigned int i = 0; i < readnum; i++ )
+      RefSeq.insert(map<string, string>::value_type(tmpDna.chain.at(i).id, tmpDna.chain.at(i).seq));
+}
+//void blastParser::MapLenLonger(int inputratio)
+
+void blastParser::UniqByQueryID( )
+{
+  if (BlastResults.size() > 0 )
+  {
+      vector<BLAST8RESULT>::iterator it;
+       it = unique( BlastResults.begin(), BlastResults.end(), equal_by_QueryID_SStart());
+       BlastResults.resize( it - BlastResults.begin());
+  }
+}
+
+void blastParser::ParseBlastResult( char *resultfile )
+{
+  try
+  {
+    ifstream inputFile(resultfile);
+    if(inputFile) throw strcat("Cannot open input Fasta file ", resultfile);
+		string fileData((istreambuf_iterator<char>(inputFile)), istreambuf_iterator<char>());
+
+		//typedef vector< string > split_vector_type;
+    //split_vector_type SplitVec; // #2: Search for tokens
+    //boost::split( SplitVec, input_line, boost::is_any_of("\t") );
+  } /// end try
+  catch(char* pMsg) { cerr << endl << "Exception:" << pMsg << endl; }
+}
+
+
+void blastParser::RmRepeatReads(int inter )
+{
+    vector<BLAST8RESULT>:: iterator it;
+    it = unique( BlastResults.begin(), BlastResults.end(), rm_repeat_by_SStart_read());
+    BlastResults.resize( it - BlastResults.begin());
+}
+
+
+void blastParser::RmShortAlignReads( float align_ratio_threshold)
+{
+  /// S.erase(remove_if(S.begin(), S.end(), pred), S.end()).
+  BlastResults.erase(
+      remove_if( BlastResults.begin(), BlastResults.end(), bind2nd(check_align_ratio(), align_ratio_threshold)),
+      BlastResults.end()
+      );
+}
+
+
+void blastParser::GetResult(bool all_info)
+{
+    /// @todo implement me
+  unsigned int QueryNum = BlastResults.size();
+  cout << "Results numbers:  " << QueryNum << endl;
+  if (all_info)
+  {
+      cout<< BlastResults.at(0).QueryID << "\t"
+	    << BlastResults.at(0).SubjectID << "\t"
+	    << BlastResults.at(0).Identity << "\t"
+	    << BlastResults.at(0).AlignmentLength << "\t"
+	    << BlastResults.at(0).QLen << "\t"
+	    << BlastResults.at(0).Mismatches << "\t"
+	    << BlastResults.at(0).GapOpenings << "\t"
+	    << BlastResults.at(0).QStart << "\t"
+	    << BlastResults.at(0).QEnd << "\t"
+	    << BlastResults.at(0).SStart << "\t"
+	    << BlastResults.at(0).SEnd << "\t"
+		<< BlastResults.at(0).SStart - 1 << "\t"
+	    << BlastResults.at(0).Expect << "\t"
+	    //<< BlastResults.at(0).BitScore << "\t"
+	    << BlastResults.at(0).RComplement << "\t"
+	    << endl;
+
+    for (int i = 1 ; i < QueryNum; i++)
+    {
+      cout<< BlastResults.at(i).QueryID << "\t"
+	    << BlastResults.at(i).SubjectID << "\t"
+	    << BlastResults.at(i).Identity << "\t"
+	    << BlastResults.at(i).AlignmentLength << "\t"
+	    << BlastResults.at(i).QLen << "\t"
+	    << BlastResults.at(i).Mismatches << "\t"
+	    << BlastResults.at(i).GapOpenings << "\t"
+	    << BlastResults.at(i).QStart << "\t"
+	    << BlastResults.at(i).QEnd << "\t"
+	    << BlastResults.at(i).SStart << "\t"
+	    << BlastResults.at(i).SEnd << "\t"
+		<< BlastResults.at(i).SStart - BlastResults.at(i-1).SEnd << "\t"
+	    << BlastResults.at(i).Expect << "\t"
+	    //<< BlastResults.at(i).BitScore << "\t"
+	    << BlastResults.at(i).RComplement << "\t"
+	    << endl;
+    }
+  }
+}
+
+
+void blastParser::MapContigsToRef(char *out_seq, int align_len_threshold, bool gap_region, char *align_file, char *out_align_depth)
+{
+  /// pre:  blast results, Reads and Reference sequence have been read in
+  /// post: according to the blast results, reads are mapped to the reference
+  ///       and a map sequence writte into the file out_seq
+
+	DNA tmp_dna;
+	if (align_file)
+			tmp_dna.Read454AlignDepth( align_file );
+
+  /// firstly:  check the reads and reference sequence are not empty
+   if( RefSeq.empty() || Reads.empty() )
+  {
+    cout << "Map need enter the reads sequence, exit now!" << endl;
+    return ;
+  }
+   /// Secondly: processing the blast result
+   /// step 1: sort the result by QueryID and QStart (Query Start loc);
+   /// step 2: remove the short aligned reads,
+   ///         according to blast result,for each contig,only longest part
+   ///         aligned to the reference are keeped back,
+   ///         and no overlap between each part;
+   /// step 3: sort the blast result by SStart (Subject Start loc);
+   /// step 4: rm the repeat Alignment in the reference according to the SStart;
+   /// step 5: adjust the QStart and QEnd postion,
+   ///				 and the SStart and SEnd postion is also adjusted according to that;
+
+
+  /// step 1
+  RmShortAlignInContig(align_len_threshold);
+ // GetResult( true );
+
+  /// step 2
+  sort(BlastResults.begin(), BlastResults.end(),less_by_QueryID_QStart());
+ // GetResult( true );
+
+  RmMussyAlignInContig();
+ // GetResult( true );
+
+
+  /// step 3
+   sort(BlastResults.begin(), BlastResults.end(),less_by_SStart());
+  // GetResult( true );
+
+  /// step 4
+  RmRepeatAlignInContig();
+ // GetResult( true );
+
+  /// step 5
+  vector<BLAST8RESULT>:: iterator cur_it, pre_it;
+//   for ( cur_it = BlastResults.begin() + 1; cur_it != BlastResults.end(); ++cur_it)
+  {
+//		pre_it = cur_it - 1;
+
+		// except this contig is totally a repeat
+//     if ( cur_it->QueryID == pre_it->QueryID )
+//		if ( ( cur_it->QStart < pre_it->QEnd ) && (cur_it->QStart > pre_it->QStart) && (cur_it->QEnd > pre_it->QEnd))
+			{
+				// cur_it->QStart = pre_it->QEnd + 1;
+
+//				if( (cur_it->SStart < pre_it-> SStart) && (cur_it->SStart > pre_it-> SEnd) )
+//					{
+//				if( cur_it->RComplement )
+//					cur_it->SEnd = pre_it->SStart + 1;
+//				else
+//					cur_it->SStart = pre_it->SEnd + 1;
+//					}
+				}
+   }
+  //GetResult( true );
+
+
+   /// thirdly: begin map
+  /// need change for multiseq
+  /// initialize the a raw sequence stand by 'X'
+  /// and the depth at each position is 0;
+  string myMapSeq(RefSeq.begin()->second.length(), 'X');
+//	if( align_file)
+		vector<int> tmp_depth (RefSeq.begin()->second.length(),0);
+
+
+
+  string tmp_id,tmp_des,tmp_seq1,tmp_seq2;
+	int i = 1;
+
+  for ( cur_it = BlastResults.begin(); cur_it != BlastResults.end(); ++cur_it)
+  {
+    if( cur_it->RComplement )
+     {
+		  tmp_seq1 = Reads[cur_it->QueryID].substr(cur_it->QStart - 1 , cur_it->QEnd - cur_it->QStart + 1 );
+
+		  /// reverse compliment
+			reverse(tmp_seq1.begin(), tmp_seq1.end());
+			tmp_seq2 = tmp_seq1;
+			transform(tmp_seq2.begin(), tmp_seq2.end(), tmp_seq1.begin(),compliment_nucleotide);
+     }
+    else
+     {
+			tmp_seq1 = Reads[cur_it->QueryID].substr(cur_it->QStart - 1,cur_it->QEnd - cur_it->QStart + 1);
+	 }
+
+      /// string& replace( size_type index, size_type num, const string& str );
+     myMapSeq.replace(cur_it->SStart -1, cur_it->SEnd - cur_it->SStart + 1,tmp_seq1);
+
+     //copy ( tmp_dna.depth[cur_it->QueryID].begin() + cur_it->QStart - 1, tmp_dna.depth[cur_it->QueryID].begin() + cur_it->QEnd - 1, ostream_iterator<int>(cout," "));
+     if (align_file )
+      copy( tmp_dna.depth[cur_it->QueryID].begin() + cur_it->QStart - 1,
+			tmp_dna.depth[cur_it->QueryID].begin() + cur_it->QEnd - 1,
+			tmp_depth.begin() + cur_it->SStart - 1 );
+
+	 /// get the uncovered region
+	 if(gap_region)
+      RefSeq.begin()->second.replace(RefSeq.begin()->second.begin() + cur_it->SStart -1,
+								     RefSeq.begin()->second.begin() + cur_it->SEnd - 1,
+									 cur_it->SEnd - cur_it->SStart + 1,
+									 'X');
+   }
+
+    tmp_id = "my ref seq";
+    tmp_des = tmp_id.append("\tlength=");
+    tmp_des.append(boost::lexical_cast<string>(myMapSeq.length()));
+    tmp_dna.addChain( tmp_id, tmp_des, myMapSeq );
+    if (align_file)
+	{
+		tmp_dna.depth.clear();
+		tmp_dna.depth.insert(map<SEQID,DEPTH>::value_type(tmp_id, tmp_depth));
+		tmp_dna.Write454AlignDepth(out_align_depth);
+	}
+    tmp_dna.writeFasta(out_seq);
+
+	if(gap_region)
+	{
+		char gap_file[50];
+		strcpy(gap_file, out_seq);
+		strcat(gap_file, ".GapRegion");
+		tmp_dna.clear();
+		tmp_dna.addChain( tmp_id,tmp_des, RefSeq.begin()->second );
+		tmp_dna.writeFasta( gap_file );
+	}
+    return ;
+}
+
+void blastParser::RmShortAlignInContig(int len_threshold)
+{
+  /// remove the resualts with alignment length short than len_threshold
+  /// S.erase(remove_if(S.begin(), S.end(), pred), S.end()).
+  BlastResults.erase(
+      remove_if( BlastResults.begin(), BlastResults.end(), bind2nd(check_align_len_2(),len_threshold) ),
+      BlastResults.end()
+      );
+}
+
+void blastParser::RmLowAlignRatioInContig(float align_ratio_threshold)
+{
+	BlastResults.erase(
+		remove_if( BlastResults.begin(), BlastResults.end(), bind2nd(check_align_ratio(), align_ratio_threshold) ),
+		BlastResults.end()
+		);
+}
+
+void blastParser::RmMussyAlignInContig()
+{
+  /// remove the mussy result
+  vector<BLAST8RESULT>::iterator it;
+       it = unique( BlastResults.begin(), BlastResults.end(), equal_by_QueryID_QStart());
+       BlastResults.resize( it - BlastResults.begin());
+}
+
+
+void blastParser::RmRepeatAlignInContig()
+{
+  /// remove the mussy result
+  vector<BLAST8RESULT>::iterator it;
+       it = unique( BlastResults.begin(), BlastResults.end(), rm_repeat_by_SStart_contig());
+       BlastResults.resize( it - BlastResults.begin());
+}
+
+
+void blastParser::FilterBlast8Result(bool is_reads, int threshold)
+{
+	// reads and contigs blast result are filtered by different tactics
+	if(is_reads) // process the reads results
+		{
+		}
+	else  // process the contigs results
+		{
+		  RmShortAlignInContig(threshold);
+		  sort(BlastResults.begin(), BlastResults.end(),less_by_QueryID_QStart());
+		  RmMussyAlignInContig();
+		  sort(BlastResults.begin(), BlastResults.end(),less_by_SStart());
+		}
+}
+void blastParser::RmRepeatReads(int inter )
+{
+    vector<BLAST8RESULT>:: iterator it;
+    it = unique( BlastResults.begin(), BlastResults.end(), rm_repeat_by_SStart_read());
+    BlastResults.resize( it - BlastResults.begin());
+}
+
+
+void blastParser::RmShortAlignReads( float align_ratio_threshold)
+{
+  /// S.erase(remove_if(S.begin(), S.end(), pred), S.end()).
+  BlastResults.erase(
+      remove_if( BlastResults.begin(), BlastResults.end(), bind2nd(check_align_ratio(), align_ratio_threshold)),
+      BlastResults.end()
+      );
+}
+
+
+void blastParser::GetResult(bool all_info)
+{
+    /// @todo implement me
+  unsigned int QueryNum = BlastResults.size();
+  cout << "Results numbers:  " << QueryNum << endl;
+  if (all_info)
+  {
+      cout<< BlastResults.at(0).QueryID << "\t"
+	    << BlastResults.at(0).SubjectID << "\t"
+	    << BlastResults.at(0).Identity << "\t"
+	    << BlastResults.at(0).AlignmentLength << "\t"
+	    << BlastResults.at(0).QLen << "\t"
+	    << BlastResults.at(0).Mismatches << "\t"
+	    << BlastResults.at(0).GapOpenings << "\t"
+	    << BlastResults.at(0).QStart << "\t"
+	    << BlastResults.at(0).QEnd << "\t"
+	    << BlastResults.at(0).SStart << "\t"
+	    << BlastResults.at(0).SEnd << "\t"
+		<< BlastResults.at(0).SStart - 1 << "\t"
+	    << BlastResults.at(0).Expect << "\t"
+	    //<< BlastResults.at(0).BitScore << "\t"
+	    << BlastResults.at(0).RComplement << "\t"
+	    << endl;
+
+    for (int i = 1 ; i < QueryNum; i++)
+    {
+      cout<< BlastResults.at(i).QueryID << "\t"
+	    << BlastResults.at(i).SubjectID << "\t"
+	    << BlastResults.at(i).Identity << "\t"
+	    << BlastResults.at(i).AlignmentLength << "\t"
+	    << BlastResults.at(i).QLen << "\t"
+	    << BlastResults.at(i).Mismatches << "\t"
+	    << BlastResults.at(i).GapOpenings << "\t"
+	    << BlastResults.at(i).QStart << "\t"
+	    << BlastResults.at(i).QEnd << "\t"
+	    << BlastResults.at(i).SStart << "\t"
+	    << BlastResults.at(i).SEnd << "\t"
+		<< BlastResults.at(i).SStart - BlastResults.at(i-1).SEnd << "\t"
+	    << BlastResults.at(i).Expect << "\t"
+	    //<< BlastResults.at(i).BitScore << "\t"
+	    << BlastResults.at(i).RComplement << "\t"
+	    << endl;
+    }
+  }
+}
+
+
+void blastParser::MapContigsToRef(char *out_seq, int align_len_threshold, bool gap_region, char *align_file, char *out_align_depth)
+{
+  /// pre:  blast results, Reads and Reference sequence have been read in
+  /// post: according to the blast results, reads are mapped to the reference
+  ///       and a map sequence writte into the file out_seq
+
+	DNA tmp_dna;
+	if (align_file)
+			tmp_dna.Read454AlignDepth( align_file );
+
+  /// firstly:  check the reads and reference sequence are not empty
+   if( RefSeq.empty() || Reads.empty() )
+  {
+    cout << "Map need enter the reads sequence, exit now!" << endl;
+    return ;
+  }
+   /// Secondly: processing the blast result
+   /// step 1: sort the result by QueryID and QStart (Query Start loc);
+   /// step 2: remove the short aligned reads,
+   ///         according to blast result,for each contig,only longest part
+   ///         aligned to the reference are keeped back,
+   ///         and no overlap between each part;
+   /// step 3: sort the blast result by SStart (Subject Start loc);
+   /// step 4: rm the repeat Alignment in the reference according to the SStart;
+   /// step 5: adjust the QStart and QEnd postion,
+   ///				 and the SStart and SEnd postion is also adjusted according to that;
+
+
+  /// step 1
+  RmShortAlignInContig(align_len_threshold);
+ // GetResult( true );
+
+  /// step 2
+  sort(BlastResults.begin(), BlastResults.end(),less_by_QueryID_QStart());
+ // GetResult( true );
+
+  RmMussyAlignInContig();
+ // GetResult( true );
+
+
+  /// step 3
+   sort(BlastResults.begin(), BlastResults.end(),less_by_SStart());
+  // GetResult( true );
+
+  /// step 4
+  RmRepeatAlignInContig();
+ // GetResult( true );
+
+  /// step 5
+  vector<BLAST8RESULT>:: iterator cur_it, pre_it;
+//   for ( cur_it = BlastResults.begin() + 1; cur_it != BlastResults.end(); ++cur_it)
+  {
+//		pre_it = cur_it - 1;
+
+		// except this contig is totally a repeat
+//     if ( cur_it->QueryID == pre_it->QueryID )
+//		if ( ( cur_it->QStart < pre_it->QEnd ) && (cur_it->QStart > pre_it->QStart) && (cur_it->QEnd > pre_it->QEnd))
+			{
+				// cur_it->QStart = pre_it->QEnd + 1;
+
+//				if( (cur_it->SStart < pre_it-> SStart) && (cur_it->SStart > pre_it-> SEnd) )
+//					{
+//				if( cur_it->RComplement )
+//					cur_it->SEnd = pre_it->SStart + 1;
+//				else
+//					cur_it->SStart = pre_it->SEnd + 1;
+//					}
+				}
+   }
+  //GetResult( true );
+
+
+   /// thirdly: begin map
+  /// need change for multiseq
+  /// initialize the a raw sequence stand by 'X'
+  /// and the depth at each position is 0;
+  string myMapSeq(RefSeq.begin()->second.length(), 'X');
+//	if( align_file)
+		vector<int> tmp_depth (RefSeq.begin()->second.length(),0);
+
+
+
+  string tmp_id,tmp_des,tmp_seq1,tmp_seq2;
+	int i = 1;
+
+  for ( cur_it = BlastResults.begin(); cur_it != BlastResults.end(); ++cur_it)
+  {
+    if( cur_it->RComplement )
+     {
+		  tmp_seq1 = Reads[cur_it->QueryID].substr(cur_it->QStart - 1 , cur_it->QEnd - cur_it->QStart + 1 );
+
+		  /// reverse compliment
+			reverse(tmp_seq1.begin(), tmp_seq1.end());
+			tmp_seq2 = tmp_seq1;
+			transform(tmp_seq2.begin(), tmp_seq2.end(), tmp_seq1.begin(),compliment_nucleotide);
+     }
+    else
+     {
+			tmp_seq1 = Reads[cur_it->QueryID].substr(cur_it->QStart - 1,cur_it->QEnd - cur_it->QStart + 1);
+	 }
+
+      /// string& replace( size_type index, size_type num, const string& str );
+     myMapSeq.replace(cur_it->SStart -1, cur_it->SEnd - cur_it->SStart + 1,tmp_seq1);
+
+     //copy ( tmp_dna.depth[cur_it->QueryID].begin() + cur_it->QStart - 1, tmp_dna.depth[cur_it->QueryID].begin() + cur_it->QEnd - 1, ostream_iterator<int>(cout," "));
+     if (align_file )
+      copy( tmp_dna.depth[cur_it->QueryID].begin() + cur_it->QStart - 1,
+			tmp_dna.depth[cur_it->QueryID].begin() + cur_it->QEnd - 1,
+			tmp_depth.begin() + cur_it->SStart - 1 );
+
+	 /// get the uncovered region
+	 if(gap_region)
+      RefSeq.begin()->second.replace(RefSeq.begin()->second.begin() + cur_it->SStart -1,
+								     RefSeq.begin()->second.begin() + cur_it->SEnd - 1,
+									 cur_it->SEnd - cur_it->SStart + 1,
+									 'X');
+   }
+
+    tmp_id = "my ref seq";
+    tmp_des = tmp_id.append("\tlength=");
+    tmp_des.append(boost::lexical_cast<string>(myMapSeq.length()));
+    tmp_dna.addChain( tmp_id, tmp_des, myMapSeq );
+    if (align_file)
+	{
+		tmp_dna.depth.clear();
+		tmp_dna.depth.insert(map<SEQID,DEPTH>::value_type(tmp_id, tmp_depth));
+		tmp_dna.Write454AlignDepth(out_align_depth);
+	}
+    tmp_dna.writeFasta(out_seq);
+
+	if(gap_region)
+	{
+		char gap_file[50];
+		strcpy(gap_file, out_seq);
+		strcat(gap_file, ".GapRegion");
+		tmp_dna.clear();
+		tmp_dna.addChain( tmp_id,tmp_des, RefSeq.begin()->second );
+		tmp_dna.writeFasta( gap_file );
+	}
+    return ;
+}
+
+void blastParser::RmShortAlignInContig(int len_threshold)
+{
+  /// remove the resualts with alignment length short than len_threshold
+  /// S.erase(remove_if(S.begin(), S.end(), pred), S.end()).
+  BlastResults.erase(
+      remove_if( BlastResults.begin(), BlastResults.end(), bind2nd(check_align_len_2(),len_threshold) ),
+      BlastResults.end()
+      );
+}
+
+void blastParser::RmLowAlignRatioInContig(float align_ratio_threshold)
+{
+	BlastResults.erase(
+		remove_if( BlastResults.begin(), BlastResults.end(), bind2nd(check_align_ratio(), align_ratio_threshold) ),
+		BlastResults.end()
+		);
+}
+
+void blastParser::RmMussyAlignInContig()
+{
+  /// remove the mussy result
+  vector<BLAST8RESULT>::iterator it;
+       it = unique( BlastResults.begin(), BlastResults.end(), equal_by_QueryID_QStart());
+       BlastResults.resize( it - BlastResults.begin());
+}
+
+
+void blastParser::RmRepeatAlignInContig()
+{
+  /// remove the mussy result
+  vector<BLAST8RESULT>::iterator it;
+       it = unique( BlastResults.begin(), BlastResults.end(), rm_repeat_by_SStart_contig());
+       BlastResults.resize( it - BlastResults.begin());
+}
+
+
+void blastParser::FilterBlast8Result(bool is_reads, int threshold)
+{
+	// reads and contigs blast result are filtered by different tactics
+	if(is_reads) // process the reads results
+		{
+		}
+	else  // process the contigs results
+		{
+		  RmShortAlignInContig(threshold);
+		  sort(BlastResults.begin(), BlastResults.end(),less_by_QueryID_QStart());
+		  RmMussyAlignInContig();
+		  sort(BlastResults.begin(), BlastResults.end(),less_by_SStart());
+		}
+}

@@ -1,0 +1,678 @@
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
+#include <set>
+#include <unistd.h>
+#include <sys/stat.h>
+
+#include "../myHeader/DNA.h"
+#include "../myHeader/blastparser.h"
+
+using namespace std;
+
+typedef map<string, single_gap> map_GAPS;
+typedef multimap<string, single_gap> mmap_GAPS;
+
+void usage();
+void GetGapInScaf( char* scaf_file, mmap_GAPS& gap_regions, map_DNA& in_scatigs, const int& insert_size, map<string, int>& scaf_len, map<string,DNA>& l_reads);
+void DealSoapResualt( char* in_file, mmap_GAPS& gaps, map_DNA& reads_a_, map_DNA& reads_b_,
+					 set<string>& scaf_name_set, map<string, set<string> >& scaf_gap_name_set, map<string,int>& scaf_len, map<string, DNA>& s_reads);
+int binary_pos(vector<single_gap>& gap_regions, const int& regions_num, int& key_pos );
+void GetGapInSeq( mmap_GAPS& gap_regions, const DNA& dna, const int& index, DNA& l_reads, const int& insert_size);
+
+void ConnectContigAccording2PE();
+
+int main(int argc, char *argv[])
+{
+	if(argc == 1)
+		usage();
+	else
+	{
+      clock_t start,finish;
+      double totaltime;
+      start=clock();
+
+      int opt, in_size = 0;
+      char *scaftig_file = 0, *scaf2_file = 0, *reads_a_file = 0, *reads_b_file = 0, *soap_file = 0, *out_file = 0, *out_folder = 0;
+	  while((opt = getopt(argc, argv, "f:c:a:b:s:i:o:")) != -1 )
+	  {
+		 switch(opt)
+		  {
+			  case 'f':
+				scaftig_file = optarg;
+				break;
+			  case 'a':
+				reads_a_file = optarg;
+				break;
+			  case 'b':
+				reads_b_file = optarg;
+				break;
+			  case 's':
+				soap_file = optarg;
+				break;
+			  case 'c':
+				scaf2_file = optarg;
+				break;
+			  case 'o':
+				out_folder = optarg;
+				break;
+			  case 'i':
+				in_size = boost::lexical_cast<int>(optarg);
+				break;
+			  case '?':
+				 printf("unknown option: %c\n", optopt);
+				 return EXIT_SUCCESS;
+				 break;
+		  }
+	   }
+
+		map_DNA scaftig, reads_a, reads_b;
+		readFastaMap(scaftig_file, scaftig);
+		cout << scaftig.size() << " scaffold read in" << endl;
+		finish=clock();
+		totaltime=(double)(finish-start)/CLOCKS_PER_SEC;
+		cout<<"\nProgram takes "<<totaltime<<" seconds"<<endl;
+		readFastaMap(reads_a_file, reads_a);
+		finish=clock();
+		totaltime=(double)(finish-start)/CLOCKS_PER_SEC;
+		cout<<"\nProgram takes "<<totaltime<<" seconds"<<endl;
+		cout << reads_a.size() << " reads read in" << endl;
+		readFastaMap(reads_b_file, reads_b);
+		cout << reads_b.size() << " reads read in" << endl;
+
+		mmap_GAPS gaps_in_scaffold;
+		set<string> scaffold_name_con_gap;
+		map<string, int> scafold_len;
+		map<string, set<string> >scaffold_name_con_gap_name;
+		map<string, DNA> short_reads , long_reads;
+
+		GetGapInScaf(scaf2_file, gaps_in_scaffold, scaftig, in_size, scafold_len, long_reads);
+		DealSoapResualt(soap_file, gaps_in_scaffold, reads_a, reads_b, scaffold_name_con_gap, scaffold_name_con_gap_name, scafold_len, short_reads);
+
+		finish=clock();
+		totaltime=(double)(finish-start)/CLOCKS_PER_SEC;
+		cout<<"\nProgram takes "<<totaltime<<" seconds"<<endl;
+
+		cout <<"total gaps " << gaps_in_scaffold.size() <<" in " << scaffold_name_con_gap.size() << " scafflod "<< endl;
+
+		set<string>::iterator set_it;
+		string long_reads_name, short_reads_name;
+		DNA out_dna;
+		fastaDNA out_chain;
+
+		if(mkdir(out_folder, S_IRWXU | S_IRWXG | S_IRWXO ) < 0)
+			cout << "mkdir error " << out_folder << endl;
+		if(chdir(out_folder) < 0)
+			cout << "chdir error " << out_folder << endl;
+		else
+			cout << "chdir ok" << endl;
+
+		multimap<string, single_gap>::iterator mul_it;
+		pair<multimap<string, single_gap>::iterator, multimap<string, single_gap>::iterator> ret;
+		ofstream Fout("gap.info");
+		cout << scaffold_name_con_gap.size() << endl;
+		cout << long_reads.size() << endl;
+		cout << short_reads.size() <<endl;
+
+		for(set_it = scaffold_name_con_gap.begin(); set_it != scaffold_name_con_gap.end(); ++set_it)
+		{
+			for(int i = 0; i < long_reads[*set_it].chain.size() - 1; i += 2)
+			{
+				long_reads_name.append(*set_it);
+				long_reads_name.append("_");
+				long_reads_name.append( long_reads[*set_it].chain.at(i).id );
+				long_reads_name.append("_");
+				long_reads_name.append( long_reads[*set_it].chain.at(i+1).id );
+				long_reads_name.append("_l");
+				out_chain = long_reads[*set_it].getChain(i);
+				out_dna.addChain(out_chain);
+				out_chain = long_reads[*set_it].getChain(i+1);
+				out_dna.addChain(out_chain);
+				out_dna.writeFasta( const_cast<char *>(long_reads_name.c_str() )  );
+				out_dna.chain.clear();
+				long_reads_name.clear();
+			}
+			set<string>::iterator reads_id_it;
+			for(reads_id_it = scaffold_name_con_gap_name[*set_it].begin(); reads_id_it != scaffold_name_con_gap_name[*set_it].end(); ++reads_id_it)
+			{
+				for(int i = 0; i < short_reads[*set_it].chain.size(); ++i)
+				{
+					if(short_reads[*set_it].chain.at(i).id == (*reads_id_it))
+					{
+					out_chain = short_reads[*set_it].getChain(i);
+					out_dna.addChain(out_chain);
+					}
+				}
+				short_reads_name.append(*set_it);
+				short_reads_name.append("_");
+				short_reads_name.append((*reads_id_it) );
+				short_reads_name.append("_");
+				short_reads_name.append(boost::lexical_cast<string>(in_size));
+				short_reads_name.append("_s");
+				out_dna.UniqByDescription();
+				out_dna.writeFasta( const_cast<char *>(short_reads_name.c_str() )  );
+				out_dna.chain.clear();
+				short_reads_name.clear();
+			}
+
+			Fout << *set_it <<"\t"<< long_reads[*set_it].chain.size()/2 << "\t" << short_reads[*set_it].chain.size() << endl;
+				ret = gaps_in_scaffold.equal_range(*set_it);
+				for (mul_it = ret.first; mul_it != ret.second; ++mul_it)
+				{
+				Fout << "\t" <<mul_it->first << "\t" << mul_it->second.id1 << "\t" << mul_it->second.id2 << "\t"
+					 << mul_it->second.pos1 << "\t" << mul_it->second.pos2 <<"\t"<< mul_it->second.real_gap << endl;
+				}
+		}// end for
+
+		Fout.close();
+
+		finish=clock();
+		totaltime=(double)(finish-start)/CLOCKS_PER_SEC;
+		cout<<"\nProgram takes "<<totaltime<<" seconds"<<endl;
+	}// end else
+
+  return EXIT_SUCCESS;
+}
+
+void usage()
+{
+  cout << "Get the solexa reads info in the gap region" << endl;
+  cout << "Options:" << endl;
+  cout << "\t\t-f STR: scaftig sequences, fasta file"<<endl;
+  cout << "\t\t-a STR: reads a sequences, fasta file"<<endl;
+  cout << "\t\t-b STR: reads b sequences, fasta file"<<endl;
+  cout << "\t\t-c STR: *.scaf2"<<endl;
+  cout << "\t\t-i INT: paired end insert size"<<endl;
+  cout << "\t\t-s STR: soap result file, single aligned hits file"<<endl;
+  cout << "\t\t-o STR: output folder name" << endl;
+}
+
+void DealSoapResualt( char* in_file, mmap_GAPS& gaps, map_DNA& reads_a_, map_DNA& reads_b_,
+					 set<string>& scaf_name_set, map<string, set<string> >& scaf_gap_name_set, map<string, int>& scaf_len, map<string, DNA>& s_reads )
+{
+	try
+	{
+		ifstream Fin(in_file);
+		if(!Fin) throw strcat( "Cannot open input result file", in_file);
+
+		fastaDNA tmp_chain;
+		DNA tmp_dna;
+
+		string buf, scaf_name, read_name, read_index;
+		int gaps_num = gaps.size();
+		int tmp_pos;
+		int pos_1 = 0, pos_2 = 0;
+		short int rcom = 1;
+		multimap<string, single_gap>::iterator it;
+		pair<multimap<string, single_gap>::iterator, multimap<string, single_gap>::iterator> ret;
+		map<string, string> read_index_swither;
+		read_index_swither.insert(pair<string, string>("1", "2"));
+		read_index_swither.insert(pair<string, string>("2", "1"));
+
+		for(;;)
+		{
+			getline(Fin, buf);
+			if(Fin.eof())
+				break;
+			else
+			{
+				//soap format:  +/- \t scaffold
+				pos_1 = buf.find("caffold");
+				if( pos_1!= string::npos )
+				{
+					if(buf.substr(pos_1-2, 1) == "-")
+						rcom = 1;
+					else
+						rcom = 0;
+					pos_2 = buf.find_first_of("\t", pos_1);
+					scaf_name = buf.substr(pos_1 -1 , pos_2 - pos_1 + 1);
+					boost::to_lower(scaf_name);
+					pos_1 = buf.find_first_of("\t", pos_2 + 1);
+					tmp_pos = boost::lexical_cast<int>( buf.substr(pos_2+1, pos_1 - pos_2) );
+
+					pos_1 = buf.find_first_of("\t");
+					read_name = buf.substr(0, pos_1 - 1);
+					read_index = buf.substr(pos_1 - 1, 1);
+			//cout << scaf_name <<"\t" <<tmp_pos  << "\t" << rcom << endl;
+					ret = gaps.equal_range(scaf_name);
+					for (it = ret.first; it != ret.second; ++it)
+					{
+			//cout << (*it).second.pos1 << "\t" << (*it).second.pos2 << "\t"<< (*it).second.rcomplement <<endl;
+						//--------------------------------------------------
+						// if( ( tmp_pos < 100)|| ( tmp_pos > scaf_len[scaf_name] - 100))
+						// {
+						// 	if((int)s_reads.count(scaf_name) > 0)
+						// 	{
+						// 		tmp_chain.id = (*it).second.id1;
+						// 		tmp_chain.id.append("_");
+						// 		tmp_chain.id.append((*it).second.id2);
+						// 		tmp_chain.description = read_name;
+						// 		tmp_chain.description.append(read_index);
+						// 		if(read_index == "1")
+						// 		{
+						// 			tmp_chain.seq = reads_a_[tmp_chain.description];
+						// 			s_reads[scaf_name].addChain(tmp_chain);
+						// 			tmp_chain.description = read_name;
+						// 			tmp_chain.description.append(read_index_swither[read_index]);
+						// 			tmp_chain.seq = reads_b_[tmp_chain.description];
+						// 			s_reads[scaf_name].addChain(tmp_chain);
+						// 		}
+						// 		else if(read_index == "2")
+						// 		{
+						// 			tmp_chain.seq = reads_b_[tmp_chain.description];
+						// 			s_reads[scaf_name].addChain(tmp_chain);
+						// 			tmp_chain.description = read_name;
+						// 			tmp_chain.description.append(read_index_swither[read_index]);
+						// 			tmp_chain.seq = reads_a_[tmp_chain.description];
+						// 			s_reads[scaf_name].addChain(tmp_chain);
+						// 		}
+						// 		scaf_gap_name_set[scaf_name].insert(tmp_chain.id);
+						// 	}
+						// 	else
+						// 	{
+						// 		tmp_dna.chain.clear();
+						// 		tmp_chain.id = (*it).second.id1;
+						// 		tmp_chain.id.append("_");
+						// 		tmp_chain.id.append((*it).second.id2);
+						// 		tmp_chain.description = read_name;
+						// 		tmp_chain.description.append(read_index);
+						// 		if(read_index == "1")
+						// 		{
+						// 			tmp_chain.seq = reads_a_[tmp_chain.description];
+						// 			tmp_dna.addChain(tmp_chain);
+						// 			tmp_chain.description = read_name;
+						// 			tmp_chain.description.append(read_index_swither[read_index]);
+						// 			tmp_chain.seq = reads_b_[tmp_chain.description];
+						// 			tmp_dna.addChain(tmp_chain);
+						// 			s_reads.insert(pair<string, DNA>(scaf_name, tmp_dna));
+						// 		}
+						// 		else if(read_index == "2")
+						// 		{
+						// 			tmp_chain.seq = reads_b_[tmp_chain.description];
+						// 			tmp_dna.addChain(tmp_chain);
+						// 			tmp_chain.description = read_name;
+						// 			tmp_chain.description.append(read_index_swither[read_index]);
+						// 			tmp_chain.seq = reads_a_[tmp_chain.description];
+						// 			tmp_dna.addChain(tmp_chain);
+						// 			s_reads.insert(pair<string, DNA>(scaf_name, tmp_dna));
+						// 		}
+						// 		s_reads.insert(pair<string, DNA>(scaf_name, tmp_dna));
+						// 		scaf_name_set.insert( scaf_name);
+						// 		set<string> tmp_set;
+						// 		tmp_set.insert(tmp_chain.id);
+						// 		scaf_gap_name_set.insert(pair<string, set<string> >(scaf_name, tmp_set));
+						// 	}
+						//  }
+						//--------------------------------------------------
+						if( (tmp_pos >= (*it).second.pos1) && (tmp_pos <= (*it).second.pos2) && (rcom == (*it).second.rcomplement) )
+						{
+							if((int)s_reads.count(scaf_name) > 0)
+							{
+								tmp_chain.id = (*it).second.id1;
+								tmp_chain.id.append("_");
+								tmp_chain.id.append((*it).second.id2);
+								tmp_chain.description = read_name;
+								tmp_chain.description.append(read_index_swither[read_index]);
+								if(read_index == "1")
+									tmp_chain.seq = reads_b_[tmp_chain.description];
+								if(read_index == "2")
+									tmp_chain.seq = reads_a_[tmp_chain.description];
+								s_reads[scaf_name].addChain(tmp_chain);
+								scaf_gap_name_set[scaf_name].insert(tmp_chain.id);
+							}
+							else
+							{
+								tmp_dna.chain.clear();
+								tmp_chain.id = (*it).second.id1;
+								tmp_chain.id.append("_");
+								tmp_chain.id.append((*it).second.id2);
+								tmp_chain.description = read_name;
+								tmp_chain.description.append(read_index_swither[read_index]);
+								if(read_index == "1")
+									tmp_chain.seq = reads_b_[tmp_chain.description];
+								if(read_index == "2")
+									tmp_chain.seq = reads_a_[tmp_chain.description];
+								tmp_dna.addChain(tmp_chain);
+								s_reads.insert(pair<string, DNA>(scaf_name, tmp_dna));
+								scaf_name_set.insert( scaf_name);
+								set<string> tmp_set;
+								tmp_set.insert(tmp_chain.id);
+								scaf_gap_name_set.insert(pair<string, set<string> >(scaf_name, tmp_set));
+							}
+
+						}
+					}// end for
+				 }
+			}// end else
+		}//end for
+		Fin.close();
+	}//end try
+	catch(char* pMsg) { cerr << endl << "Exception:" << pMsg << endl;}
+}
+
+
+void GetGapInScaf( char* scaf_file, mmap_GAPS& gap_regions, map_DNA& in_scatigs, const int& insert_size, map<string, int>& scaf_len, map<string,DNA>& l_reads)
+{
+	ifstream Fin(scaf_file);
+	fastaDNA tmp_chain;
+	DNA tmp_dna;
+	string buf, scaf_name, pre_contig_name, cur_contig_name, pre_contig_rcom, cur_contig_rcom ;
+	int cur_scaf_len = 0, cur_contig_len = 0, pre_contig_len = 0, tmp_pos = 0, tmp_pos_1 = 0;
+	int gap_begin = 0, gap_end = 0;
+	single_gap tmp_gap;
+	tmp_gap.rcomplement = 0;
+	tmp_gap.real_gap = 0;
+	string regstr = "([CS]\\d+)\\s+(\\d+)\\s+([\\+\\-])\\s+(\\d+)";
+	boost::regex exp(regstr);
+	boost::smatch what;
+	for(;;)
+	{
+		if(Fin.eof())
+			break;
+		else
+		{
+		getline(Fin, buf);
+
+			if(buf[0] == '>')
+			{
+				scaf_name = buf.substr(1, buf.find_first_of(" \t") -1);
+				boost::to_lower(scaf_name);
+				cur_scaf_len = boost::lexical_cast<int>(buf.substr(buf.find_last_of(" \t")+1));
+				scaf_len.insert(pair<string, int>(scaf_name, cur_scaf_len));
+				getline(Fin, buf);
+				if(boost::regex_match(buf, what, exp))
+				{
+					string msg_1(what[1].first, what[1].second);
+					string msg_3(what[3].first, what[3].second);
+					string msg_4(what[4].first, what[4].second);
+
+					pre_contig_name = msg_1;
+					pre_contig_rcom = msg_3;
+					pre_contig_len  = boost::lexical_cast<int>(msg_4);
+					gap_begin = pre_contig_len;
+				}
+				//--------------------------------------------------
+				// tmp_pos = buf.find_first_of(" \t");
+				// pre_contig_name = buf.substr(0, tmp_pos);
+				// tmp_pos = buf.find_last_of(" \t");
+				// pre_contig_len = boost::lexical_cast<int>(buf.substr(tmp_pos+1));
+				// pre_gap_begin = pre_contig_len;
+				//--------------------------------------------------
+			}
+			else
+			{
+				if(boost::regex_match(buf, what, exp))
+				{
+					string msg_1(what[1].first, what[1].second);
+					string msg_2(what[2].first, what[2].second);
+					string msg_3(what[3].first, what[3].second);
+					string msg_4(what[4].first, what[4].second);
+					cur_contig_name = msg_1;
+					cur_contig_len  = boost::lexical_cast<int>(msg_4);
+					cur_contig_rcom = msg_3;
+					gap_end = boost::lexical_cast<int>(msg_2);
+				}
+				tmp_gap.real_gap = gap_end - gap_begin;
+				if( tmp_gap.real_gap > 0)
+				{
+					tmp_gap.id1 = pre_contig_name;
+					tmp_gap.id2 = cur_contig_name;
+					tmp_gap.pos1 = gap_begin - insert_size - tmp_gap.real_gap - 100;
+					tmp_gap.pos2 = gap_end - insert_size - tmp_gap.real_gap + 100;
+					tmp_gap.rcomplement = 0;
+					gap_regions.insert(pair<string,single_gap>(scaf_name, tmp_gap));
+
+					tmp_gap.id1 = pre_contig_name;
+					tmp_gap.id2 = cur_contig_name;
+					tmp_gap.pos1 = gap_begin + insert_size + tmp_gap.real_gap - 100;
+					tmp_gap.pos2 = gap_end + insert_size + tmp_gap.real_gap + 100;
+					tmp_gap.rcomplement = 1;
+					gap_regions.insert(pair<string,single_gap>(scaf_name, tmp_gap));
+
+						if((int)l_reads.count(scaf_name) > 0)
+						{
+							tmp_chain.id = pre_contig_name;
+							tmp_chain.description = pre_contig_name;
+							tmp_chain.description.append("_");
+							tmp_chain.description.append(boost::lexical_cast<string>(pre_contig_len - 100));
+							tmp_chain.description.append("_");
+							tmp_chain.description.append(boost::lexical_cast<string>(pre_contig_len));
+							if(pre_contig_rcom == "+")
+							{
+								tmp_chain.description.append("+");
+								int contig_len = in_scatigs[pre_contig_name].length();
+								if(contig_len != pre_contig_len)
+									cerr << "Warning, the length of contig unmatch ! " << pre_contig_name << " " << contig_len << "  " << pre_contig_len << endl;
+								if( contig_len > 100)
+									tmp_chain.seq = in_scatigs[pre_contig_name].substr(contig_len - 100);
+								else
+									tmp_chain.seq = in_scatigs[pre_contig_name];
+							}
+							else
+							{
+								tmp_chain.description.append("-");
+								if(in_scatigs[pre_contig_name].length() > 100)
+									tmp_chain.seq = in_scatigs[pre_contig_name].substr(0,100);
+								else
+									tmp_chain.seq = in_scatigs[pre_contig_name];
+								tmp_chain.reverse_compliment();;
+							}
+							l_reads[scaf_name].addChain(tmp_chain);
+
+							tmp_chain.id = cur_contig_name;
+							tmp_chain.description = cur_contig_name;
+							tmp_chain.description.append("_0_100");
+							if(cur_contig_rcom == "+")
+							{
+								tmp_chain.description.append("+");
+								if(in_scatigs[cur_contig_name].length() > 100)
+									tmp_chain.seq = in_scatigs[cur_contig_name].substr(0,100);
+								else
+									tmp_chain.seq = in_scatigs[cur_contig_name];
+							}
+							else
+							{
+								tmp_chain.description.append("-");
+								int contig_len = in_scatigs[cur_contig_name].length();
+								if(contig_len != cur_contig_len)
+									cerr << "Warning, the length of contig unmatch ! " << cur_contig_name << " " << contig_len << "  " << cur_contig_len << endl;
+								if( contig_len > 100)
+									tmp_chain.seq = in_scatigs[cur_contig_name].substr(contig_len - 100);
+								else
+									tmp_chain.seq = in_scatigs[cur_contig_name];
+								tmp_chain.reverse_compliment();;
+							}
+							l_reads[scaf_name].addChain(tmp_chain);
+						}
+						else
+						{
+							tmp_dna.chain.clear();
+							tmp_chain.id = pre_contig_name;
+							tmp_chain.description = pre_contig_name;
+							tmp_chain.description.append("_");
+							tmp_chain.description.append(boost::lexical_cast<string>(pre_contig_len - 100));
+							tmp_chain.description.append("_");
+							tmp_chain.description.append(boost::lexical_cast<string>(pre_contig_len));
+							if(pre_contig_rcom == "+")
+							{
+								tmp_chain.description.append("+");
+								int contig_len = in_scatigs[pre_contig_name].length();
+								if(contig_len != pre_contig_len)
+									cerr << "Warning, the length of contig unmatch ! " << pre_contig_name << " " << contig_len << "  " << pre_contig_len << endl;
+								if( contig_len > 100)
+									tmp_chain.seq = in_scatigs[pre_contig_name].substr(contig_len - 100);
+								else
+									tmp_chain.seq = in_scatigs[pre_contig_name];
+							}
+							else
+							{
+								tmp_chain.description.append("-");
+								if(in_scatigs[pre_contig_name].length() > 100)
+									tmp_chain.seq = in_scatigs[pre_contig_name].substr(0,100);
+								else
+									tmp_chain.seq = in_scatigs[pre_contig_name];
+								tmp_chain.reverse_compliment();;
+							}
+							tmp_dna.addChain(tmp_chain);
+
+							tmp_chain.id = cur_contig_name;
+							tmp_chain.description = cur_contig_name;
+							tmp_chain.description.append("_0_100");
+							if(cur_contig_rcom == "+")
+							{
+								tmp_chain.description.append("+");
+								if(in_scatigs[cur_contig_name].length() > 100)
+									tmp_chain.seq = in_scatigs[cur_contig_name].substr(0, 100);
+								else
+									tmp_chain.seq = in_scatigs[cur_contig_name];
+							}
+							else
+							{
+								tmp_chain.description.append("-");
+								int contig_len = in_scatigs[cur_contig_name].length();
+								if(contig_len != cur_contig_len)
+									cerr << "Warning, the length of contig unmatch ! " << cur_contig_name << " " << contig_len << "  " << cur_contig_len << endl;
+								if(contig_len > 100)
+									tmp_chain.seq = in_scatigs[cur_contig_name].substr(contig_len - 100);
+								else
+									tmp_chain.seq = in_scatigs[cur_contig_name];
+								tmp_chain.reverse_compliment();;
+							}
+							tmp_dna.addChain(tmp_chain);
+
+							l_reads.insert(pair<string, DNA>(scaf_name, tmp_dna));
+						}
+				}// end if( tmp_gap.real_gap > 0)
+				pre_contig_name = cur_contig_name;
+				pre_contig_len  = cur_contig_len;
+				pre_contig_rcom = cur_contig_rcom;
+				gap_begin       = gap_end + cur_contig_len;
+			}
+		}
+	}// end for
+}
+
+void GetGapInSeq( mmap_GAPS& gap_regions, const DNA& dna, const int& index, DNA& l_reads, const int& insert_size)
+{
+	int pre_gap_begin = 0, cur_gap_begin = 0, gap_end = 0;
+	single_gap tmp_gap;
+	fastaDNA tmp_chain;
+	string str_num;
+
+	while (cur_gap_begin != string::npos)
+	{
+		cur_gap_begin = dna.chain.at(index).seq.find_first_of("Nn", cur_gap_begin);
+		if(cur_gap_begin != string::npos)
+		{
+			if((cur_gap_begin - gap_end) < 200)
+			{
+				tmp_chain.description = dna.chain.at(index).id;
+				tmp_chain.description.append("_");
+				str_num = boost::lexical_cast<string>(gap_end);
+				tmp_chain.description.append(str_num);
+				tmp_chain.description.append("_");
+				str_num = boost::lexical_cast<string>(cur_gap_begin);
+				tmp_chain.description.append(str_num);
+				tmp_chain.seq = dna.chain.at(index).seq.substr(gap_end+1, cur_gap_begin - gap_end -1);
+				l_reads.addChain(tmp_chain);
+			}
+			else
+			{
+				// 100bp after gap_end
+				if(gap_end > 0)
+				{
+					tmp_chain.description = dna.chain.at(index).id;
+					tmp_chain.description.append("_");
+					str_num = boost::lexical_cast<string>( gap_end );
+					tmp_chain.description.append(str_num);
+					tmp_chain.description.append("_");
+					str_num = boost::lexical_cast<string>( gap_end + 100);
+					tmp_chain.description.append(str_num);
+					tmp_chain.seq = dna.chain.at(index).seq.substr(gap_end, 100);
+					l_reads.addChain(tmp_chain);
+				}
+				// 100bp befor cur_gap_begin
+				tmp_chain.description = dna.chain.at(index).id;
+				tmp_chain.description.append("_");
+				str_num = boost::lexical_cast<string>(cur_gap_begin - 100);
+				tmp_chain.description.append(str_num);
+				tmp_chain.description.append("_");
+				str_num = boost::lexical_cast<string>(cur_gap_begin);
+				tmp_chain.description.append(str_num);
+				tmp_chain.seq = dna.chain.at(index).seq.substr(cur_gap_begin - 100, 100);
+				l_reads.addChain(tmp_chain);
+			}
+			gap_end = dna.chain.at(index).seq.find_first_not_of("Nn",cur_gap_begin) - 1;
+
+			if(cur_gap_begin - insert_size > 0)
+			{
+				tmp_gap.pos1 = cur_gap_begin - insert_size;
+				tmp_gap.pos2 = gap_end - insert_size;
+				//tmp_gap.rcomplement = "-";
+				gap_regions.insert(pair<string, single_gap>( dna.chain.at(index).id, tmp_gap) );
+
+				if( gap_end + insert_size < dna.chain.at(index).seq.length())
+				{
+					tmp_gap.pos1 = cur_gap_begin + insert_size;
+					tmp_gap.pos2 = gap_end + insert_size;
+					//tmp_gap.rcomplement = "+";
+					gap_regions.insert(pair<string, single_gap>( dna.chain.at(index).id, tmp_gap) );
+				}
+			}
+			else
+			{
+				if( gap_end + insert_size < dna.chain.at(index).seq.length())
+				{
+					tmp_gap.pos1 = cur_gap_begin + insert_size;
+					tmp_gap.pos2 = gap_end + insert_size;
+					//tmp_gap.rcomplement = "-";
+					gap_regions.insert(pair<string, single_gap>( dna.chain.at(index).id, tmp_gap) );
+				}
+			}
+			pre_gap_begin = cur_gap_begin;
+			cur_gap_begin = gap_end + 1;
+		}
+	}// endl while
+	// the last gap_end
+	if( dna.chain.at(index).seq.length()-gap_end > 100)
+	{
+		tmp_chain.description = dna.chain.at(index).id;
+		tmp_chain.description.append("_");
+		str_num = boost::lexical_cast<string>( gap_end );
+		tmp_chain.description.append(str_num);
+		tmp_chain.description.append("_");
+		str_num = boost::lexical_cast<string>( gap_end + 100);
+		tmp_chain.description.append(str_num);
+		tmp_chain.seq = dna.chain.at(index).seq.substr(gap_end, 100);
+		l_reads.addChain(tmp_chain);
+	}
+	else
+	{
+		tmp_chain.description = dna.chain.at(index).id;
+		tmp_chain.description.append("_");
+		str_num = boost::lexical_cast<string>( gap_end );
+		tmp_chain.description.append(str_num);
+		tmp_chain.description.append("_");
+		str_num = boost::lexical_cast<string>(dna.chain.at(index).seq.length());
+		tmp_chain.description.append(str_num);
+		tmp_chain.seq = dna.chain.at(index).seq.substr(gap_end);
+		l_reads.addChain(tmp_chain);
+	}
+}
+
+int binary_pos(vector<single_gap>& gap_regions, const int& regions_num, int& key_pos )
+{
+	int start =0, end = regions_num -1;
+	while(start < end)
+	{
+		int k = (start + end)/2;
+		if( key_pos >= gap_regions.at(k).pos1 && key_pos <= gap_regions.at(k).pos2)
+			return k;
+		if( key_pos <= gap_regions.at(k).pos1)
+			end = k -1;
+		else
+			start = k + 1;
+	}//end while
+	return -1;
+}

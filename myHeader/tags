@@ -1,0 +1,567 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ABOVE	matrix.h	/^enum BACKPOS {ABOVE_LEFT, LEFT,ABOVE};$/;"	e	enum:BACKPOS
+ABOVE_LEFT	matrix.h	/^enum BACKPOS {ABOVE_LEFT, LEFT,ABOVE};$/;"	e	enum:BACKPOS
+ALIGN_H	alignment.h	2;"	d
+AddQuery	blastparser.cpp	/^void BlastParser::AddQuery( const BLAST8RESULT& input_result)$/;"	f	class:BlastParser	signature:( const BLAST8RESULT& input_result)
+AddQuery	blastparser.h	/^    void AddQuery(const BLAST8RESULT& input_result);$/;"	p	class:BlastParser	access:public	signature:(const BLAST8RESULT& input_result)
+AlignMatrix	alignment.h	/^	vector< vector<int> > AlignMatrix;	$/;"	m	class:Alignment	access:private
+Alignment	alignment.cpp	/^Alignment::Alignment(string input_str1,string input_str2)$/;"	f	class:Alignment	signature:(string input_str1,string input_str2)
+Alignment	alignment.h	/^	Alignment() {};$/;"	f	class:Alignment	access:public	signature:()
+Alignment	alignment.h	/^	Alignment(string input_str1, string input_str2);$/;"	p	class:Alignment	access:public	signature:(string input_str1, string input_str2)
+Alignment	alignment.h	/^class Alignment$/;"	c
+Alignment::AlignMatrix	alignment.h	/^	vector< vector<int> > AlignMatrix;	$/;"	m	class:Alignment	access:private
+Alignment::Alignment	alignment.cpp	/^Alignment::Alignment(string input_str1,string input_str2)$/;"	f	class:Alignment	signature:(string input_str1,string input_str2)
+Alignment::Alignment	alignment.h	/^	Alignment() {};$/;"	f	class:Alignment	access:public	signature:()
+Alignment::Alignment	alignment.h	/^	Alignment(string input_str1, string input_str2);$/;"	p	class:Alignment	access:public	signature:(string input_str1, string input_str2)
+Alignment::BACKINFO	alignment.h	/^	struct BACKINFO$/;"	s	class:Alignment	access:private
+Alignment::BACKINFO::BackCol	alignment.h	/^			int BackCol;$/;"	m	struct:Alignment::BACKINFO	access:public
+Alignment::BACKINFO::BackPos	alignment.h	/^			BACKPOS BackPos;$/;"	m	struct:Alignment::BACKINFO	access:public
+Alignment::BACKINFO::BackRow	alignment.h	/^			int BackRow;$/;"	m	struct:Alignment::BACKINFO	access:public
+Alignment::BACKINFO::SeqEnd1	alignment.h	/^			bool SeqEnd1, SeqEnd2;$/;"	m	struct:Alignment::BACKINFO	access:public
+Alignment::BACKINFO::SeqEnd2	alignment.h	/^			bool SeqEnd1, SeqEnd2;$/;"	m	struct:Alignment::BACKINFO	access:public
+Alignment::BackInfo	alignment.h	/^		} BackInfo;$/;"	m	class:Alignment	typeref:struct:Alignment::BACKINFO	access:private
+Alignment::BestAlignScore	alignment.h	/^	int BestAlignScore;$/;"	m	class:Alignment	access:private
+Alignment::BuiltMatrix	alignment.cpp	/^void Alignment::BuiltMatrix(int input_row, int input_col)$/;"	f	class:Alignment	signature:(int input_row, int input_col)
+Alignment::BuiltMatrix	alignment.h	/^	void BuiltMatrix( int input_row, int input_col);$/;"	p	class:Alignment	access:public	signature:( int input_row, int input_col)
+Alignment::Col	alignment.h	/^	int Row,Col;$/;"	m	class:Alignment	access:private
+Alignment::GlobalAlign	alignment.cpp	/^void Alignment::GlobalAlign( )$/;"	f	class:Alignment	signature:( )
+Alignment::GlobalAlign	alignment.h	/^	void GlobalAlign();$/;"	p	class:Alignment	access:public	signature:()
+Alignment::LocalAlign	alignment.cpp	/^void Alignment::LocalAlign()$/;"	f	class:Alignment	signature:()
+Alignment::LocalAlign	alignment.h	/^        void LocalAlign();$/;"	p	class:Alignment	access:public	signature:()
+Alignment::RawSeq1	alignment.h	/^	string RawSeq1,RawSeq2;$/;"	m	class:Alignment	access:private
+Alignment::RawSeq2	alignment.h	/^	string RawSeq1,RawSeq2;$/;"	m	class:Alignment	access:private
+Alignment::Row	alignment.h	/^	int Row,Col;$/;"	m	class:Alignment	access:private
+Alignment::Traceback	alignment.cpp	/^void Alignment::Traceback( int input_row, int input_col)$/;"	f	class:Alignment	signature:( int input_row, int input_col)
+Alignment::Traceback	alignment.h	/^	void Traceback( int input_row, int input_col);$/;"	p	class:Alignment	access:public	signature:( int input_row, int input_col)
+Alignment::getAlignMatrix	alignment.cpp	/^void Alignment::getAlignMatrix()$/;"	f	class:Alignment	signature:()
+Alignment::getAlignMatrix	alignment.h	/^	void getAlignMatrix();$/;"	p	class:Alignment	access:public	signature:()
+Alignment::nuc44	alignment.h	/^	NUC44 nuc44;$/;"	m	class:Alignment	access:private
+AlignmentLength	blastparser.h	/^  int     AlignmentLength;$/;"	m	class:BLAST8RESULT	access:public
+AssemblyWrongCheck	blastparser.cpp	/^void BlastParser::AssemblyWrongCheck(int len_threshold, int identity_threshold)$/;"	f	class:BlastParser	signature:(int len_threshold, int identity_threshold)
+AssemblyWrongCheck	blastparser.h	/^	void AssemblyWrongCheck(int len_threshold, int identity_threshold);$/;"	p	class:BlastParser	access:public	signature:(int len_threshold, int identity_threshold)
+BACKINFO	alignment.h	/^	struct BACKINFO$/;"	s	class:Alignment	access:private
+BACKPOS	matrix.h	/^enum BACKPOS {ABOVE_LEFT, LEFT,ABOVE};$/;"	g
+BLAST8RESULT	blastparser.h	/^  BLAST8RESULT(){Init();}$/;"	f	class:BLAST8RESULT	access:public	signature:()
+BLAST8RESULT	blastparser.h	/^class BLAST8RESULT$/;"	c
+BLAST8RESULT::AlignmentLength	blastparser.h	/^  int     AlignmentLength;$/;"	m	class:BLAST8RESULT	access:public
+BLAST8RESULT::BLAST8RESULT	blastparser.h	/^  BLAST8RESULT(){Init();}$/;"	f	class:BLAST8RESULT	access:public	signature:()
+BLAST8RESULT::BitScore	blastparser.h	/^  float   BitScore;$/;"	m	class:BLAST8RESULT	access:public
+BLAST8RESULT::Gaps	blastparser.h	/^  int     Gaps;$/;"	m	class:BLAST8RESULT	access:public
+BLAST8RESULT::Identity	blastparser.h	/^  int	  Identity;$/;"	m	class:BLAST8RESULT	access:public
+BLAST8RESULT::Init	blastparser.h	/^  void Init()$/;"	f	class:BLAST8RESULT	access:public	signature:()
+BLAST8RESULT::Mismatches	blastparser.h	/^  int     Mismatches;$/;"	m	class:BLAST8RESULT	access:public
+BLAST8RESULT::QEnd	blastparser.h	/^  int     QEnd;$/;"	m	class:BLAST8RESULT	access:public
+BLAST8RESULT::QLen	blastparser.h	/^  int     QLen;$/;"	m	class:BLAST8RESULT	access:public
+BLAST8RESULT::QStart	blastparser.h	/^  int     QStart;$/;"	m	class:BLAST8RESULT	access:public
+BLAST8RESULT::QueryID	blastparser.h	/^  string  QueryID;$/;"	m	class:BLAST8RESULT	access:public
+BLAST8RESULT::RComplement	blastparser.h	/^  bool    RComplement;$/;"	m	class:BLAST8RESULT	access:public
+BLAST8RESULT::SEnd	blastparser.h	/^  int     SEnd;$/;"	m	class:BLAST8RESULT	access:public
+BLAST8RESULT::SLen	blastparser.h	/^  int     SLen;$/;"	m	class:BLAST8RESULT	access:public
+BLAST8RESULT::SStart	blastparser.h	/^  int     SStart;$/;"	m	class:BLAST8RESULT	access:public
+BLAST8RESULT::SubjectID	blastparser.h	/^  string  SubjectID;$/;"	m	class:BLAST8RESULT	access:public
+BLASTPARSERH	blastparser.h	2;"	d
+BackCol	alignment.h	/^			int BackCol;$/;"	m	struct:Alignment::BACKINFO	access:public
+BackInfo	alignment.h	/^		} BackInfo;$/;"	m	class:Alignment	typeref:struct:Alignment::BACKINFO	access:private
+BackPos	alignment.h	/^			BACKPOS BackPos;$/;"	m	struct:Alignment::BACKINFO	access:public
+BackRow	alignment.h	/^			int BackRow;$/;"	m	struct:Alignment::BACKINFO	access:public
+BestAlignScore	alignment.h	/^	int BestAlignScore;$/;"	m	class:Alignment	access:private
+BitScore	blastparser.h	/^  float   BitScore;$/;"	m	class:BLAST8RESULT	access:public
+BlastParser	blastparser.cpp	/^BlastParser::BlastParser()$/;"	f	class:BlastParser	signature:()
+BlastParser	blastparser.h	/^    BlastParser();$/;"	p	class:BlastParser	access:public	signature:()
+BlastParser	blastparser.h	/^class BlastParser$/;"	c
+BlastParser::AddQuery	blastparser.cpp	/^void BlastParser::AddQuery( const BLAST8RESULT& input_result)$/;"	f	class:BlastParser	signature:( const BLAST8RESULT& input_result)
+BlastParser::AddQuery	blastparser.h	/^    void AddQuery(const BLAST8RESULT& input_result);$/;"	p	class:BlastParser	access:public	signature:(const BLAST8RESULT& input_result)
+BlastParser::AssemblyWrongCheck	blastparser.cpp	/^void BlastParser::AssemblyWrongCheck(int len_threshold, int identity_threshold)$/;"	f	class:BlastParser	signature:(int len_threshold, int identity_threshold)
+BlastParser::AssemblyWrongCheck	blastparser.h	/^	void AssemblyWrongCheck(int len_threshold, int identity_threshold);$/;"	p	class:BlastParser	access:public	signature:(int len_threshold, int identity_threshold)
+BlastParser::BlastParser	blastparser.cpp	/^BlastParser::BlastParser()$/;"	f	class:BlastParser	signature:()
+BlastParser::BlastParser	blastparser.h	/^    BlastParser();$/;"	p	class:BlastParser	access:public	signature:()
+BlastParser::BlastResults	blastparser.h	/^  vector<BLAST8RESULT>      BlastResults;$/;"	m	class:BlastParser	access:public
+BlastParser::FilterBlastResult	blastparser.cpp	/^void BlastParser::FilterBlastResult(bool contig_flag, bool sort_flag, int len_threshold, int ratio_threshold)$/;"	f	class:BlastParser	signature:(bool contig_flag, bool sort_flag, int len_threshold, int ratio_threshold)
+BlastParser::FilterBlastResult	blastparser.h	/^    void FilterBlastResult(bool contig_flag, bool sort_flag, int len_threshold, int ratio_threshold);$/;"	p	class:BlastParser	access:public	signature:(bool contig_flag, bool sort_flag, int len_threshold, int ratio_threshold)
+BlastParser::GetContigCoverInfo	blastparser.cpp	/^GetContigCoverInfo(const int& query_len_threshold,const int& sbjct_len_threshold,const int& align_len_threshold,const int& identity_threshold,bool sort_tag)$/;"	f	class:BlastParser	signature:(const int& query_len_threshold,const int& sbjct_len_threshold,const int& align_len_threshold,const int& identity_threshold,bool sort_tag)
+BlastParser::GetContigCoverInfo	blastparser.h	/^	void GetContigCoverInfo(const int& query_len_threshold,const int& sbjct_len_threshold,const int& align_len_threshold, const int& identity_threshold, bool sort_tag);$/;"	p	class:BlastParser	access:public	signature:(const int& query_len_threshold,const int& sbjct_len_threshold,const int& align_len_threshold, const int& identity_threshold, bool sort_tag)
+BlastParser::GetEstCoverInfo	blastparser.cpp	/^GetEstCoverInfo(const int& query_len_threshold,const int& sbjct_len_threshold,const int& align_len_threshold,const int& identity_threshold,bool sort_tag)$/;"	f	class:BlastParser	signature:(const int& query_len_threshold,const int& sbjct_len_threshold,const int& align_len_threshold,const int& identity_threshold,bool sort_tag)
+BlastParser::GetEstCoverInfo	blastparser.h	/^	void GetEstCoverInfo(const int& query_len_threshold,const int& sbjct_len_threshold,const int& align_len_threshold, const int& identity_threshold, bool sort_tag);$/;"	p	class:BlastParser	access:public	signature:(const int& query_len_threshold,const int& sbjct_len_threshold,const int& align_len_threshold, const int& identity_threshold, bool sort_tag)
+BlastParser::GetGapRegion	blastparser.cpp	/^void BlastParser::GetGapRegion( vector<single_gap>& gr, int add_len )$/;"	f	class:BlastParser	signature:( vector<single_gap>& gr, int add_len )
+BlastParser::GetGapRegion	blastparser.h	/^	void GetGapRegion( vector<single_gap>& gr, int add_len = 100);$/;"	p	class:BlastParser	access:public	signature:( vector<single_gap>& gr, int add_len = 100)
+BlastParser::GetResult	blastparser.cpp	/^void BlastParser::GetResult(bool head_info)$/;"	f	class:BlastParser	signature:(bool head_info)
+BlastParser::GetResult	blastparser.h	/^    void GetResult(bool head_info);$/;"	p	class:BlastParser	access:public	signature:(bool head_info)
+BlastParser::GetUncoverSeq	blastparser.cpp	/^void BlastParser::GetUncoverSeq(char* out_seq)$/;"	f	class:BlastParser	signature:(char* out_seq)
+BlastParser::GetUncoverSeq	blastparser.h	/^	void GetUncoverSeq(char* out_seq);$/;"	p	class:BlastParser	access:public	signature:(char* out_seq)
+BlastParser::MapContigsToRef	blastparser.cpp	/^void BlastParser::MapContigsToRef(char *out_seq, int align_len_threshold, bool gap_region, char *align_file, char *out_align_depth)$/;"	f	class:BlastParser	signature:(char *out_seq, int align_len_threshold, bool gap_region, char *align_file, char *out_align_depth)
+BlastParser::MapContigsToRef	blastparser.h	/^    void MapContigsToRef(char *out_seq, int align_len_threshold, bool gap_region, char *align_file = 0, char *out_align_depth = 0);$/;"	p	class:BlastParser	access:public	signature:(char *out_seq, int align_len_threshold, bool gap_region, char *align_file = 0, char *out_align_depth = 0)
+BlastParser::MapReadsToRef	blastparser.cpp	/^void BlastParser::MapReadsToRef( char *out_filename, float input_identity)$/;"	f	class:BlastParser	signature:( char *out_filename, float input_identity)
+BlastParser::MapReadsToRef	blastparser.h	/^    void MapReadsToRef(char *out_filename, float input_identity);$/;"	p	class:BlastParser	access:public	signature:(char *out_filename, float input_identity)
+BlastParser::ReadBlastResult	blastparser.cpp	/^void BlastParser::ReadBlastResult(char* resultfile, const int& results_num)$/;"	f	class:BlastParser	signature:(char* resultfile, const int& results_num)
+BlastParser::ReadBlastResult	blastparser.h	/^    void ReadBlastResult(char *resultfile, const int& results_num);$/;"	p	class:BlastParser	access:public	signature:(char *resultfile, const int& results_num)
+BlastParser::Reads	blastparser.h	/^  map<SEQID, SEQ> 			Reads, RefSeq;$/;"	m	class:BlastParser	access:public
+BlastParser::RefSeq	blastparser.h	/^  map<SEQID, SEQ> 			Reads, RefSeq;$/;"	m	class:BlastParser	access:public
+BlastParser::RmLowIdentity	blastparser.cpp	/^void BlastParser::RmLowIdentity(int identity_threshold)$/;"	f	class:BlastParser	signature:(int identity_threshold)
+BlastParser::RmLowIdentity	blastparser.h	/^	void RmLowIdentity(int identity_threshold);$/;"	p	class:BlastParser	access:public	signature:(int identity_threshold)
+BlastParser::RmLowQueryAlignRatio	blastparser.cpp	/^void BlastParser::RmLowQueryAlignRatio(int ratio_threshold)$/;"	f	class:BlastParser	signature:(int ratio_threshold)
+BlastParser::RmLowQueryAlignRatio	blastparser.h	/^	void RmLowQueryAlignRatio( int ratio_threshold );$/;"	p	class:BlastParser	access:public	signature:( int ratio_threshold )
+BlastParser::RmLowSbjctAlignRatio	blastparser.cpp	/^void BlastParser::RmLowSbjctAlignRatio(int ratio_threshold)$/;"	f	class:BlastParser	signature:(int ratio_threshold)
+BlastParser::RmLowSbjctAlignRatio	blastparser.h	/^	void RmLowSbjctAlignRatio( int ratio_threshold );$/;"	p	class:BlastParser	access:public	signature:( int ratio_threshold )
+BlastParser::RmMussyAlignInContig	blastparser.cpp	/^void BlastParser::RmMussyAlignInContig(int len_threshold)$/;"	f	class:BlastParser	signature:(int len_threshold)
+BlastParser::RmMussyAlignInContig	blastparser.h	/^	void RmMussyAlignInContig(int len_threshold);$/;"	p	class:BlastParser	access:public	signature:(int len_threshold)
+BlastParser::RmQueryInMiddle	blastparser.cpp	/^void BlastParser::RmQueryInMiddle()$/;"	f	class:BlastParser	signature:()
+BlastParser::RmQueryInMiddle	blastparser.h	/^    void RmQueryInMiddle();$/;"	p	class:BlastParser	access:public	signature:()
+BlastParser::RmRepeatAlignBy_QStart	blastparser.cpp	/^void BlastParser::RmRepeatAlignBy_QStart()$/;"	f	class:BlastParser	signature:()
+BlastParser::RmRepeatAlignBy_QStart	blastparser.h	/^    void RmRepeatAlignBy_QStart();$/;"	p	class:BlastParser	access:public	signature:()
+BlastParser::RmRepeatAlignBy_SStart	blastparser.cpp	/^void BlastParser::RmRepeatAlignBy_SStart()$/;"	f	class:BlastParser	signature:()
+BlastParser::RmRepeatAlignBy_SStart	blastparser.h	/^    void RmRepeatAlignBy_SStart();$/;"	p	class:BlastParser	access:public	signature:()
+BlastParser::RmRepeatReads	blastparser.cpp	/^void BlastParser::RmRepeatReads(int inter )$/;"	f	class:BlastParser	signature:(int inter )
+BlastParser::RmRepeatReads	blastparser.h	/^    void RmRepeatReads( int inter = 2 );$/;"	p	class:BlastParser	access:public	signature:( int inter = 2 )
+BlastParser::RmShortAlign	blastparser.cpp	/^void BlastParser::RmShortAlign(int len_threshold)$/;"	f	class:BlastParser	signature:(int len_threshold)
+BlastParser::RmShortAlign	blastparser.h	/^    void RmShortAlign(int len_threshold);$/;"	p	class:BlastParser	access:public	signature:(int len_threshold)
+BlastParser::RmShortQuery	blastparser.cpp	/^void BlastParser::RmShortQuery(int len_threshold)$/;"	f	class:BlastParser	signature:(int len_threshold)
+BlastParser::RmShortQuery	blastparser.h	/^    void RmShortQuery(int len_threshold);$/;"	p	class:BlastParser	access:public	signature:(int len_threshold)
+BlastParser::RmShortSbjct	blastparser.cpp	/^void BlastParser::RmShortSbjct(int len_threshold)$/;"	f	class:BlastParser	signature:(int len_threshold)
+BlastParser::RmShortSbjct	blastparser.h	/^    void RmShortSbjct(int len_threshold);$/;"	p	class:BlastParser	access:public	signature:(int len_threshold)
+BlastParser::SetReads	blastparser.cpp	/^void BlastParser::SetReads( char *infile )$/;"	f	class:BlastParser	signature:( char *infile )
+BlastParser::SetReads	blastparser.h	/^    void SetReads ( char* infile);$/;"	p	class:BlastParser	access:public	signature:( char* infile)
+BlastParser::SetRefSeq	blastparser.cpp	/^void BlastParser::SetRefSeq( char *infile )$/;"	f	class:BlastParser	signature:( char *infile )
+BlastParser::SetRefSeq	blastparser.h	/^    void SetRefSeq ( char* infile);$/;"	p	class:BlastParser	access:public	signature:( char* infile)
+BlastParser::UniqBy_QueryID	blastparser.cpp	/^void BlastParser::UniqBy_QueryID( )$/;"	f	class:BlastParser	signature:( )
+BlastParser::UniqBy_QueryID	blastparser.h	/^    void UniqBy_QueryID( );$/;"	p	class:BlastParser	access:public	signature:( )
+BlastParser::UniqBy_QueryID_SStart	blastparser.cpp	/^void BlastParser::UniqBy_QueryID_SStart( )$/;"	f	class:BlastParser	signature:( )
+BlastParser::UniqBy_QueryID_SStart	blastparser.h	/^    void UniqBy_QueryID_SStart( );$/;"	p	class:BlastParser	access:public	signature:( )
+BlastParser::UniqBy_SubjectID	blastparser.cpp	/^void BlastParser::UniqBy_SubjectID( )$/;"	f	class:BlastParser	signature:( )
+BlastParser::UniqBy_SubjectID	blastparser.h	/^    void UniqBy_SubjectID( );$/;"	p	class:BlastParser	access:public	signature:( )
+BlastParser::reads_set	blastparser.h	/^  bool 						reads_set, ref_set;$/;"	m	class:BlastParser	access:public
+BlastParser::ref_set	blastparser.h	/^  bool 						reads_set, ref_set;$/;"	m	class:BlastParser	access:public
+BlastParser::~BlastParser	blastparser.cpp	/^BlastParser::~BlastParser()$/;"	f	class:BlastParser	signature:()
+BlastParser::~BlastParser	blastparser.h	/^    ~BlastParser();$/;"	p	class:BlastParser	access:public	signature:()
+BlastResults	blastparser.h	/^  vector<BLAST8RESULT>      BlastResults;$/;"	m	class:BlastParser	access:public
+BuiltMatrix	alignment.cpp	/^void Alignment::BuiltMatrix(int input_row, int input_col)$/;"	f	class:Alignment	signature:(int input_row, int input_col)
+BuiltMatrix	alignment.h	/^	void BuiltMatrix( int input_row, int input_col);$/;"	p	class:Alignment	access:public	signature:( int input_row, int input_col)
+CDS	DNA.cpp	/^CDS::CDS()$/;"	f	class:CDS	signature:()
+CDS	DNA.cpp	/^CDS::CDS(const CDS& other_cds):$/;"	f	class:CDS	signature:(const CDS& other_cds)
+CDS	DNA.h	/^  CDS();  \/\/ constructor$/;"	p	class:CDS	access:public	signature:()
+CDS	DNA.h	/^  CDS(const CDS& other_cds); \/\/ copy constructor$/;"	p	class:CDS	access:public	signature:(const CDS& other_cds)
+CDS	DNA.h	/^class CDS$/;"	c
+CDS::CDS	DNA.cpp	/^CDS::CDS()$/;"	f	class:CDS	signature:()
+CDS::CDS	DNA.cpp	/^CDS::CDS(const CDS& other_cds):$/;"	f	class:CDS	signature:(const CDS& other_cds)
+CDS::CDS	DNA.h	/^  CDS();  \/\/ constructor$/;"	p	class:CDS	access:public	signature:()
+CDS::CDS	DNA.h	/^  CDS(const CDS& other_cds); \/\/ copy constructor$/;"	p	class:CDS	access:public	signature:(const CDS& other_cds)
+CDS::cds_info	DNA.h	/^  string cds_info;$/;"	m	class:CDS	access:public
+CDS::codon_start	DNA.h	/^  int  codon_start;$/;"	m	class:CDS	access:public
+CDS::db_xref	DNA.h	/^  string db_xref;$/;"	m	class:CDS	access:public
+CDS::gene	DNA.h	/^  string gene;$/;"	m	class:CDS	access:public
+CDS::id	DNA.h	/^  string id;$/;"	m	class:CDS	access:public
+CDS::indices	DNA.h	/^  pair<int, int> indices;$/;"	m	class:CDS	access:public
+CDS::initial	DNA.cpp	/^void CDS::initial()$/;"	f	class:CDS	signature:()
+CDS::initial	DNA.h	/^  void initial();$/;"	p	class:CDS	access:public	signature:()
+CDS::locus_tag	DNA.h	/^  string locus_tag;$/;"	m	class:CDS	access:public
+CDS::protein_id	DNA.h	/^  string protein_id;$/;"	m	class:CDS	access:public
+CDS::recomplement	DNA.h	/^  bool recomplement;$/;"	m	class:CDS	access:public
+CDS::set_indices	DNA.cpp	/^void CDS::set_indices(int input_pos1,int input_pos2)$/;"	f	class:CDS	signature:(int input_pos1,int input_pos2)
+CDS::set_indices	DNA.h	/^  void set_indices(int input_pos1,int input_pos2);$/;"	p	class:CDS	access:public	signature:(int input_pos1,int input_pos2)
+CONV	general.h	34;"	d
+Col	alignment.h	/^	int Row,Col;$/;"	m	class:Alignment	access:private
+DEPTH	DNA.h	/^typedef vector<int> DEPTH;$/;"	t
+DNA	DNA.cpp	/^DNA::DNA() { }$/;"	f	class:DNA	signature:()
+DNA	DNA.cpp	/^DNA::DNA(const DNA& other_dna):$/;"	f	class:DNA	signature:(const DNA& other_dna)
+DNA	DNA.h	/^    DNA(); \/\/ constructor$/;"	p	class:DNA	access:public	signature:()
+DNA	DNA.h	/^    DNA(const DNA& other_dna); \/\/ copy constructor$/;"	p	class:DNA	access:public	signature:(const DNA& other_dna)
+DNA	DNA.h	/^class DNA$/;"	c
+DNA::DNA	DNA.cpp	/^DNA::DNA() { }$/;"	f	class:DNA	signature:()
+DNA::DNA	DNA.cpp	/^DNA::DNA(const DNA& other_dna):$/;"	f	class:DNA	signature:(const DNA& other_dna)
+DNA::DNA	DNA.h	/^    DNA(); \/\/ constructor$/;"	p	class:DNA	access:public	signature:()
+DNA::DNA	DNA.h	/^    DNA(const DNA& other_dna); \/\/ copy constructor$/;"	p	class:DNA	access:public	signature:(const DNA& other_dna)
+DNA::Read454AlignDepth	DNA.cpp	/^void DNA::Read454AlignDepth(char* file)$/;"	f	class:DNA	signature:(char* file)
+DNA::Read454AlignDepth	DNA.h	/^	void Read454AlignDepth(char* file);$/;"	p	class:DNA	access:public	signature:(char* file)
+DNA::UniqByDescription	DNA.cpp	/^void DNA::UniqByDescription()$/;"	f	class:DNA	signature:()
+DNA::UniqByDescription	DNA.h	/^	void UniqByDescription();$/;"	p	class:DNA	access:public	signature:()
+DNA::Write454AlignDepth	DNA.cpp	/^void DNA::Write454AlignDepth(char* file)$/;"	f	class:DNA	signature:(char* file)
+DNA::Write454AlignDepth	DNA.h	/^	void Write454AlignDepth(char* file);$/;"	p	class:DNA	access:public	signature:(char* file)
+DNA::addCDS	DNA.cpp	/^void DNA::addCDS(CDS input_cds)$/;"	f	class:DNA	signature:(CDS input_cds)
+DNA::addCDS	DNA.h	/^    void addCDS(CDS input_cds);$/;"	p	class:DNA	access:public	signature:(CDS input_cds)
+DNA::addChain	DNA.cpp	/^void DNA::addChain( const fastaDNA& dc)$/;"	f	class:DNA	signature:( const fastaDNA& dc)
+DNA::addChain	DNA.cpp	/^void DNA::addChain(const string& id, const string& description, const string& seq)$/;"	f	class:DNA	signature:(const string& id, const string& description, const string& seq)
+DNA::addChain	DNA.h	/^    void addChain( const fastaDNA& dc); \/\/ add a new chain member$/;"	p	class:DNA	access:public	signature:( const fastaDNA& dc)
+DNA::addChain	DNA.h	/^    void addChain(const string& id,const string& description,const string& seq);$/;"	p	class:DNA	access:public	signature:(const string& id,const string& description,const string& seq)
+DNA::cds	DNA.h	/^    vector<CDS>	   		cds;$/;"	m	class:DNA	access:public
+DNA::chain	DNA.h	/^    vector<fastaDNA> 	chain;$/;"	m	class:DNA	access:public
+DNA::clear	DNA.cpp	/^void DNA::clear()$/;"	f	class:DNA	signature:()
+DNA::clear	DNA.h	/^	void clear();$/;"	p	class:DNA	access:public	signature:()
+DNA::depth	DNA.h	/^    map<SEQID,DEPTH> 	depth;$/;"	m	class:DNA	access:public
+DNA::getCDSNum	DNA.cpp	/^int DNA::getCDSNum()$/;"	f	class:DNA	signature:()
+DNA::getCDSNum	DNA.h	/^    int  getCDSNum();$/;"	p	class:DNA	access:public	signature:()
+DNA::getCDSSeq	DNA.cpp	/^fastaDNA DNA::getCDSSeq( const int& chain_index, const int& cds_index)$/;"	f	class:DNA	signature:( const int& chain_index, const int& cds_index)
+DNA::getCDSSeq	DNA.h	/^    fastaDNA getCDSSeq(const int& chain_index, const int& cds_index);$/;"	p	class:DNA	access:public	signature:(const int& chain_index, const int& cds_index)
+DNA::getChain	DNA.cpp	/^fastaDNA DNA::getChain(const int& index)$/;"	f	class:DNA	signature:(const int& index)
+DNA::getChain	DNA.h	/^    fastaDNA getChain(const int& chain_index);$/;"	p	class:DNA	access:public	signature:(const int& chain_index)
+DNA::getChainNum	DNA.cpp	/^int DNA::getChainNum()$/;"	f	class:DNA	signature:()
+DNA::getChainNum	DNA.h	/^    int  getChainNum();$/;"	p	class:DNA	access:public	signature:()
+DNA::getOligo2Id	DNA.cpp	/^bool DNA::getOligo2Id(string input_oligo, vector<fastaDNA>::iterator input_it)$/;"	f	class:DNA	signature:(string input_oligo, vector<fastaDNA>::iterator input_it)
+DNA::getOligo2Id	DNA.h	/^    bool getOligo2Id(string input_oligo, vector<fastaDNA>::iterator input_it);$/;"	p	class:DNA	access:public	signature:(string input_oligo, vector<fastaDNA>::iterator input_it)
+DNA::getOligoNum	DNA.cpp	/^void DNA::getOligoNum()$/;"	f	class:DNA	signature:()
+DNA::getOligoNum	DNA.h	/^    void getOligoNum();$/;"	p	class:DNA	access:public	signature:()
+DNA::oligoCount	DNA.cpp	/^void DNA::oligoCount(const int& chain_index, const int& oligo_num)$/;"	f	class:DNA	signature:(const int& chain_index, const int& oligo_num)
+DNA::oligoCount	DNA.h	/^    void oligoCount(const int& chain_index, const int& oligo_num);$/;"	p	class:DNA	access:public	signature:(const int& chain_index, const int& oligo_num)
+DNA::oligo_counter	DNA.h	/^    map<string,int> 	oligo_counter;$/;"	m	class:DNA	access:public
+DNA::qual	DNA.h	/^    map<SEQID,QUAL> 	qual;$/;"	m	class:DNA	access:public
+DNA::readFasta	DNA.cpp	/^void DNA::readFasta( char *file ) \/\/ read Fasta format sequences$/;"	f	class:DNA	signature:( char *file )
+DNA::readFasta	DNA.h	/^    void readFasta(char *file); \/\/ read Fasta format sequence$/;"	p	class:DNA	access:public	signature:(char *file)
+DNA::readGenBank	DNA.cpp	/^void DNA::readGenBank ( char* file )$/;"	f	class:DNA	signature:( char* file )
+DNA::readGenBank	DNA.h	/^    void readGenBank(char *file);\/\/ read GenBank format sequence$/;"	p	class:DNA	access:public	signature:(char *file)
+DNA::readQual	DNA.cpp	/^void DNA::readQual(char* file)$/;"	f	class:DNA	signature:(char* file)
+DNA::readQual	DNA.h	/^    void readQual(char* file);$/;"	p	class:DNA	access:public	signature:(char* file)
+DNA::trimBeginEndX	DNA.cpp	/^void DNA::trimBeginEndX(int short_len)$/;"	f	class:DNA	signature:(int short_len)
+DNA::trimBeginEndX	DNA.h	/^    void trimBeginEndX(int short_len);$/;"	p	class:DNA	access:public	signature:(int short_len)
+DNA::writeFasta	DNA.cpp	/^void DNA::writeFasta ( char* file )$/;"	f	class:DNA	signature:( char* file )
+DNA::writeFasta	DNA.h	/^    void writeFasta(char *file); \/\/ write Fasta format sequence$/;"	p	class:DNA	access:public	signature:(char *file)
+DNA::writeQual	DNA.cpp	/^void DNA::writeQual(char *file)$/;"	f	class:DNA	signature:(char *file)
+DNA::writeQual	DNA.h	/^    void writeQual(char *file);$/;"	p	class:DNA	access:public	signature:(char *file)
+DNA_H_	DNA.h	2;"	d
+Dvdw	general.h	36;"	d
+FilterBlastResult	blastparser.cpp	/^void BlastParser::FilterBlastResult(bool contig_flag, bool sort_flag, int len_threshold, int ratio_threshold)$/;"	f	class:BlastParser	signature:(bool contig_flag, bool sort_flag, int len_threshold, int ratio_threshold)
+FilterBlastResult	blastparser.h	/^    void FilterBlastResult(bool contig_flag, bool sort_flag, int len_threshold, int ratio_threshold);$/;"	p	class:BlastParser	access:public	signature:(bool contig_flag, bool sort_flag, int len_threshold, int ratio_threshold)
+GEN_H_	general.h	3;"	d
+GapExtPenalty	matrix.h	/^	int GapExtPenalty;$/;"	m	class:NUC44	access:private
+GapPenalty	matrix.h	/^	int GapPenalty;$/;"	m	class:NUC44	access:private
+Gaps	blastparser.h	/^  int     Gaps;$/;"	m	class:BLAST8RESULT	access:public
+GetContigCoverInfo	blastparser.cpp	/^GetContigCoverInfo(const int& query_len_threshold,const int& sbjct_len_threshold,const int& align_len_threshold,const int& identity_threshold,bool sort_tag)$/;"	f	class:BlastParser	signature:(const int& query_len_threshold,const int& sbjct_len_threshold,const int& align_len_threshold,const int& identity_threshold,bool sort_tag)
+GetContigCoverInfo	blastparser.h	/^	void GetContigCoverInfo(const int& query_len_threshold,const int& sbjct_len_threshold,const int& align_len_threshold, const int& identity_threshold, bool sort_tag);$/;"	p	class:BlastParser	access:public	signature:(const int& query_len_threshold,const int& sbjct_len_threshold,const int& align_len_threshold, const int& identity_threshold, bool sort_tag)
+GetEstCoverInfo	blastparser.cpp	/^GetEstCoverInfo(const int& query_len_threshold,const int& sbjct_len_threshold,const int& align_len_threshold,const int& identity_threshold,bool sort_tag)$/;"	f	class:BlastParser	signature:(const int& query_len_threshold,const int& sbjct_len_threshold,const int& align_len_threshold,const int& identity_threshold,bool sort_tag)
+GetEstCoverInfo	blastparser.h	/^	void GetEstCoverInfo(const int& query_len_threshold,const int& sbjct_len_threshold,const int& align_len_threshold, const int& identity_threshold, bool sort_tag);$/;"	p	class:BlastParser	access:public	signature:(const int& query_len_threshold,const int& sbjct_len_threshold,const int& align_len_threshold, const int& identity_threshold, bool sort_tag)
+GetGapRegion	blastparser.cpp	/^void BlastParser::GetGapRegion( vector<single_gap>& gr, int add_len )$/;"	f	class:BlastParser	signature:( vector<single_gap>& gr, int add_len )
+GetGapRegion	blastparser.h	/^	void GetGapRegion( vector<single_gap>& gr, int add_len = 100);$/;"	p	class:BlastParser	access:public	signature:( vector<single_gap>& gr, int add_len = 100)
+GetResult	blastparser.cpp	/^void BlastParser::GetResult(bool head_info)$/;"	f	class:BlastParser	signature:(bool head_info)
+GetResult	blastparser.h	/^    void GetResult(bool head_info);$/;"	p	class:BlastParser	access:public	signature:(bool head_info)
+GetUncoverSeq	blastparser.cpp	/^void BlastParser::GetUncoverSeq(char* out_seq)$/;"	f	class:BlastParser	signature:(char* out_seq)
+GetUncoverSeq	blastparser.h	/^	void GetUncoverSeq(char* out_seq);$/;"	p	class:BlastParser	access:public	signature:(char* out_seq)
+GlobalAlign	alignment.cpp	/^void Alignment::GlobalAlign( )$/;"	f	class:Alignment	signature:( )
+GlobalAlign	alignment.h	/^	void GlobalAlign();$/;"	p	class:Alignment	access:public	signature:()
+Identity	blastparser.h	/^  int	  Identity;$/;"	m	class:BLAST8RESULT	access:public
+Init	blastparser.h	/^  void Init()$/;"	f	class:BLAST8RESULT	access:public	signature:()
+LEFT	matrix.h	/^enum BACKPOS {ABOVE_LEFT, LEFT,ABOVE};$/;"	e	enum:BACKPOS
+LocalAlign	alignment.cpp	/^void Alignment::LocalAlign()$/;"	f	class:Alignment	signature:()
+LocalAlign	alignment.h	/^        void LocalAlign();$/;"	p	class:Alignment	access:public	signature:()
+MATRIX_H	matrix.h	21;"	d
+MAX	general.h	32;"	d
+MAX3	general.h	/^T MAX3(T input1,T input2, T input3)$/;"	f	signature:(T input1,T input2, T input3)
+MAX_HOMOLOGY	general.h	37;"	d
+MIN	general.h	33;"	d
+MapContigsToRef	blastparser.cpp	/^void BlastParser::MapContigsToRef(char *out_seq, int align_len_threshold, bool gap_region, char *align_file, char *out_align_depth)$/;"	f	class:BlastParser	signature:(char *out_seq, int align_len_threshold, bool gap_region, char *align_file, char *out_align_depth)
+MapContigsToRef	blastparser.h	/^    void MapContigsToRef(char *out_seq, int align_len_threshold, bool gap_region, char *align_file = 0, char *out_align_depth = 0);$/;"	p	class:BlastParser	access:public	signature:(char *out_seq, int align_len_threshold, bool gap_region, char *align_file = 0, char *out_align_depth = 0)
+MapReadsToRef	blastparser.cpp	/^void BlastParser::MapReadsToRef( char *out_filename, float input_identity)$/;"	f	class:BlastParser	signature:( char *out_filename, float input_identity)
+MapReadsToRef	blastparser.h	/^    void MapReadsToRef(char *out_filename, float input_identity);$/;"	p	class:BlastParser	access:public	signature:(char *out_filename, float input_identity)
+Matrix	matrix.h	/^	int (*Matrix)[15];$/;"	m	class:NUC44	access:private
+Mismatches	blastparser.h	/^  int     Mismatches;$/;"	m	class:BLAST8RESULT	access:public
+NUC44	matrix.cpp	/^NUC44::NUC44()$/;"	f	class:NUC44	signature:()
+NUC44	matrix.h	/^	NUC44();$/;"	p	class:NUC44	access:public	signature:()
+NUC44	matrix.h	/^class NUC44$/;"	c
+NUC44::GapExtPenalty	matrix.h	/^	int GapExtPenalty;$/;"	m	class:NUC44	access:private
+NUC44::GapPenalty	matrix.h	/^	int GapPenalty;$/;"	m	class:NUC44	access:private
+NUC44::Matrix	matrix.h	/^	int (*Matrix)[15];$/;"	m	class:NUC44	access:private
+NUC44::NUC44	matrix.cpp	/^NUC44::NUC44()$/;"	f	class:NUC44	signature:()
+NUC44::NUC44	matrix.h	/^	NUC44();$/;"	p	class:NUC44	access:public	signature:()
+NUC44::Nuc2Index	matrix.h	/^	map <string, int> Nuc2Index;$/;"	m	class:NUC44	access:private
+NUC44::getGapExtPenalty	matrix.h	/^	int getGapExtPenalty() { return GapExtPenalty; };$/;"	f	class:NUC44	access:public	signature:()
+NUC44::getGapPenalty	matrix.h	/^	int getGapPenalty()   { return GapPenalty; };$/;"	f	class:NUC44	access:public	signature:()
+NUC44::getNuc44Score	matrix.cpp	/^int NUC44::getNuc44Score(int entry1,int entry2) const$/;"	f	class:NUC44	signature:(int entry1,int entry2) const
+NUC44::getNuc44Score	matrix.h	/^	int getNuc44Score(int entry1, int entry2) const;$/;"	p	class:NUC44	access:public	signature:(int entry1, int entry2) const
+NUC44::getNucIndex	matrix.cpp	/^int NUC44::getNucIndex(string input_nuc)$/;"	f	class:NUC44	signature:(string input_nuc)
+NUC44::getNucIndex	matrix.h	/^	int getNucIndex(string input_nuc);$/;"	p	class:NUC44	access:public	signature:(string input_nuc)
+NUC44::setGapExtPenalty	matrix.cpp	/^void NUC44::setGapExtPenalty( int input_gapextpen)$/;"	f	class:NUC44	signature:( int input_gapextpen)
+NUC44::setGapExtPenalty	matrix.h	/^	void setGapExtPenalty( int input_gapextpen);$/;"	p	class:NUC44	access:public	signature:( int input_gapextpen)
+NUC44::setGapPenalty	matrix.cpp	/^void NUC44::setGapPenalty( int input_gappen)$/;"	f	class:NUC44	signature:( int input_gappen)
+NUC44::setGapPenalty	matrix.h	/^	void setGapPenalty( int input_gappen);$/;"	p	class:NUC44	access:public	signature:( int input_gappen)
+NUC44::~NUC44	matrix.cpp	/^NUC44::~NUC44()$/;"	f	class:NUC44	signature:()
+NUC44::~NUC44	matrix.h	/^	~NUC44();$/;"	p	class:NUC44	access:public	signature:()
+Nuc2Index	matrix.h	/^	map <string, int> Nuc2Index;$/;"	m	class:NUC44	access:private
+QEnd	blastparser.h	/^  int     QEnd;$/;"	m	class:BLAST8RESULT	access:public
+QLen	blastparser.h	/^  int     QLen;$/;"	m	class:BLAST8RESULT	access:public
+QStart	blastparser.h	/^  int     QStart;$/;"	m	class:BLAST8RESULT	access:public
+QUAL	DNA.h	/^typedef vector<int> QUAL;$/;"	t
+QueryID	blastparser.h	/^  string  QueryID;$/;"	m	class:BLAST8RESULT	access:public
+RComplement	blastparser.h	/^  bool    RComplement;$/;"	m	class:BLAST8RESULT	access:public
+RawSeq1	alignment.h	/^	string RawSeq1,RawSeq2;$/;"	m	class:Alignment	access:private
+RawSeq2	alignment.h	/^	string RawSeq1,RawSeq2;$/;"	m	class:Alignment	access:private
+Read454AlignDepth	DNA.cpp	/^void DNA::Read454AlignDepth(char* file)$/;"	f	class:DNA	signature:(char* file)
+Read454AlignDepth	DNA.h	/^	void Read454AlignDepth(char* file);$/;"	p	class:DNA	access:public	signature:(char* file)
+ReadBlastResult	blastparser.cpp	/^void BlastParser::ReadBlastResult(char* resultfile, const int& results_num)$/;"	f	class:BlastParser	signature:(char* resultfile, const int& results_num)
+ReadBlastResult	blastparser.h	/^    void ReadBlastResult(char *resultfile, const int& results_num);$/;"	p	class:BlastParser	access:public	signature:(char *resultfile, const int& results_num)
+Reads	blastparser.h	/^  map<SEQID, SEQ> 			Reads, RefSeq;$/;"	m	class:BlastParser	access:public
+RefSeq	blastparser.h	/^  map<SEQID, SEQ> 			Reads, RefSeq;$/;"	m	class:BlastParser	access:public
+RmLowIdentity	blastparser.cpp	/^void BlastParser::RmLowIdentity(int identity_threshold)$/;"	f	class:BlastParser	signature:(int identity_threshold)
+RmLowIdentity	blastparser.h	/^	void RmLowIdentity(int identity_threshold);$/;"	p	class:BlastParser	access:public	signature:(int identity_threshold)
+RmLowQueryAlignRatio	blastparser.cpp	/^void BlastParser::RmLowQueryAlignRatio(int ratio_threshold)$/;"	f	class:BlastParser	signature:(int ratio_threshold)
+RmLowQueryAlignRatio	blastparser.h	/^	void RmLowQueryAlignRatio( int ratio_threshold );$/;"	p	class:BlastParser	access:public	signature:( int ratio_threshold )
+RmLowSbjctAlignRatio	blastparser.cpp	/^void BlastParser::RmLowSbjctAlignRatio(int ratio_threshold)$/;"	f	class:BlastParser	signature:(int ratio_threshold)
+RmLowSbjctAlignRatio	blastparser.h	/^	void RmLowSbjctAlignRatio( int ratio_threshold );$/;"	p	class:BlastParser	access:public	signature:( int ratio_threshold )
+RmMussyAlignInContig	blastparser.cpp	/^void BlastParser::RmMussyAlignInContig(int len_threshold)$/;"	f	class:BlastParser	signature:(int len_threshold)
+RmMussyAlignInContig	blastparser.h	/^	void RmMussyAlignInContig(int len_threshold);$/;"	p	class:BlastParser	access:public	signature:(int len_threshold)
+RmQueryInMiddle	blastparser.cpp	/^void BlastParser::RmQueryInMiddle()$/;"	f	class:BlastParser	signature:()
+RmQueryInMiddle	blastparser.h	/^    void RmQueryInMiddle();$/;"	p	class:BlastParser	access:public	signature:()
+RmRepeatAlignBy_QStart	blastparser.cpp	/^void BlastParser::RmRepeatAlignBy_QStart()$/;"	f	class:BlastParser	signature:()
+RmRepeatAlignBy_QStart	blastparser.h	/^    void RmRepeatAlignBy_QStart();$/;"	p	class:BlastParser	access:public	signature:()
+RmRepeatAlignBy_SStart	blastparser.cpp	/^void BlastParser::RmRepeatAlignBy_SStart()$/;"	f	class:BlastParser	signature:()
+RmRepeatAlignBy_SStart	blastparser.h	/^    void RmRepeatAlignBy_SStart();$/;"	p	class:BlastParser	access:public	signature:()
+RmRepeatReads	blastparser.cpp	/^void BlastParser::RmRepeatReads(int inter )$/;"	f	class:BlastParser	signature:(int inter )
+RmRepeatReads	blastparser.h	/^    void RmRepeatReads( int inter = 2 );$/;"	p	class:BlastParser	access:public	signature:( int inter = 2 )
+RmShortAlign	blastparser.cpp	/^void BlastParser::RmShortAlign(int len_threshold)$/;"	f	class:BlastParser	signature:(int len_threshold)
+RmShortAlign	blastparser.h	/^    void RmShortAlign(int len_threshold);$/;"	p	class:BlastParser	access:public	signature:(int len_threshold)
+RmShortQuery	blastparser.cpp	/^void BlastParser::RmShortQuery(int len_threshold)$/;"	f	class:BlastParser	signature:(int len_threshold)
+RmShortQuery	blastparser.h	/^    void RmShortQuery(int len_threshold);$/;"	p	class:BlastParser	access:public	signature:(int len_threshold)
+RmShortSbjct	blastparser.cpp	/^void BlastParser::RmShortSbjct(int len_threshold)$/;"	f	class:BlastParser	signature:(int len_threshold)
+RmShortSbjct	blastparser.h	/^    void RmShortSbjct(int len_threshold);$/;"	p	class:BlastParser	access:public	signature:(int len_threshold)
+Row	alignment.h	/^	int Row,Col;$/;"	m	class:Alignment	access:private
+Rvdw	general.h	35;"	d
+SEQ	blastparser.h	/^typedef string SEQ;$/;"	t
+SEQID	DNA.h	/^typedef string SEQID;$/;"	t
+SEQID	blastparser.h	/^typedef string SEQID;$/;"	t
+SEnd	blastparser.h	/^  int     SEnd;$/;"	m	class:BLAST8RESULT	access:public
+SLen	blastparser.h	/^  int     SLen;$/;"	m	class:BLAST8RESULT	access:public
+SStart	blastparser.h	/^  int     SStart;$/;"	m	class:BLAST8RESULT	access:public
+SeqEnd1	alignment.h	/^			bool SeqEnd1, SeqEnd2;$/;"	m	struct:Alignment::BACKINFO	access:public
+SeqEnd2	alignment.h	/^			bool SeqEnd1, SeqEnd2;$/;"	m	struct:Alignment::BACKINFO	access:public
+SetReads	blastparser.cpp	/^void BlastParser::SetReads( char *infile )$/;"	f	class:BlastParser	signature:( char *infile )
+SetReads	blastparser.h	/^    void SetReads ( char* infile);$/;"	p	class:BlastParser	access:public	signature:( char* infile)
+SetRefSeq	blastparser.cpp	/^void BlastParser::SetRefSeq( char *infile )$/;"	f	class:BlastParser	signature:( char *infile )
+SetRefSeq	blastparser.h	/^    void SetRefSeq ( char* infile);$/;"	p	class:BlastParser	access:public	signature:( char* infile)
+SubjectID	blastparser.h	/^  string  SubjectID;$/;"	m	class:BLAST8RESULT	access:public
+Traceback	alignment.cpp	/^void Alignment::Traceback( int input_row, int input_col)$/;"	f	class:Alignment	signature:( int input_row, int input_col)
+Traceback	alignment.h	/^	void Traceback( int input_row, int input_col);$/;"	p	class:Alignment	access:public	signature:( int input_row, int input_col)
+UniqByDescription	DNA.cpp	/^void DNA::UniqByDescription()$/;"	f	class:DNA	signature:()
+UniqByDescription	DNA.h	/^	void UniqByDescription();$/;"	p	class:DNA	access:public	signature:()
+UniqBy_QueryID	blastparser.cpp	/^void BlastParser::UniqBy_QueryID( )$/;"	f	class:BlastParser	signature:( )
+UniqBy_QueryID	blastparser.h	/^    void UniqBy_QueryID( );$/;"	p	class:BlastParser	access:public	signature:( )
+UniqBy_QueryID_SStart	blastparser.cpp	/^void BlastParser::UniqBy_QueryID_SStart( )$/;"	f	class:BlastParser	signature:( )
+UniqBy_QueryID_SStart	blastparser.h	/^    void UniqBy_QueryID_SStart( );$/;"	p	class:BlastParser	access:public	signature:( )
+UniqBy_SubjectID	blastparser.cpp	/^void BlastParser::UniqBy_SubjectID( )$/;"	f	class:BlastParser	signature:( )
+UniqBy_SubjectID	blastparser.h	/^    void UniqBy_SubjectID( );$/;"	p	class:BlastParser	access:public	signature:( )
+Write454AlignDepth	DNA.cpp	/^void DNA::Write454AlignDepth(char* file)$/;"	f	class:DNA	signature:(char* file)
+Write454AlignDepth	DNA.h	/^	void Write454AlignDepth(char* file);$/;"	p	class:DNA	access:public	signature:(char* file)
+_DIS_SET_	disjoint_set.h	2;"	d
+addCDS	DNA.cpp	/^void DNA::addCDS(CDS input_cds)$/;"	f	class:DNA	signature:(CDS input_cds)
+addCDS	DNA.h	/^    void addCDS(CDS input_cds);$/;"	p	class:DNA	access:public	signature:(CDS input_cds)
+addChain	DNA.cpp	/^void DNA::addChain( const fastaDNA& dc)$/;"	f	class:DNA	signature:( const fastaDNA& dc)
+addChain	DNA.cpp	/^void DNA::addChain(const string& id, const string& description, const string& seq)$/;"	f	class:DNA	signature:(const string& id, const string& description, const string& seq)
+addChain	DNA.h	/^    void addChain( const fastaDNA& dc); \/\/ add a new chain member$/;"	p	class:DNA	access:public	signature:( const fastaDNA& dc)
+addChain	DNA.h	/^    void addChain(const string& id,const string& description,const string& seq);$/;"	p	class:DNA	access:public	signature:(const string& id,const string& description,const string& seq)
+assemble	DNA.h	/^  fastaDNA assemble(fastaDNA c1, fastaDNA c2, int minmatch);$/;"	p	class:fastaDNA	access:public	signature:(fastaDNA c1, fastaDNA c2, int minmatch)
+cds	DNA.h	/^    vector<CDS>	   		cds;$/;"	m	class:DNA	access:public
+cds_info	DNA.h	/^  string cds_info;$/;"	m	class:CDS	access:public
+chain	DNA.h	/^    vector<fastaDNA> 	chain;$/;"	m	class:DNA	access:public
+check_align_identity	blastparser.h	/^struct check_align_identity:public std::binary_function<BLAST8RESULT,int,bool>$/;"	s	inherits:std::binary_function
+check_align_identity::operator ()	blastparser.h	/^inline	bool operator()(const BLAST8RESULT &r, int align_identity) const$/;"	f	struct:check_align_identity	access:public	signature:(const BLAST8RESULT &r, int align_identity) const
+check_align_len	blastparser.h	/^struct check_align_len:public std::binary_function<BLAST8RESULT,int,bool>$/;"	s	inherits:std::binary_function
+check_align_len::operator ()	blastparser.h	/^inline	bool operator()(const BLAST8RESULT &r, int align_len) const$/;"	f	struct:check_align_len	access:public	signature:(const BLAST8RESULT &r, int align_len) const
+check_align_len_ratio	blastparser.h	/^struct check_align_len_ratio:public std::binary_function<BLAST8RESULT,int,bool>$/;"	s	inherits:std::binary_function
+check_align_len_ratio::operator ()	blastparser.h	/^inline	bool operator()(const BLAST8RESULT &r, int align_len) const$/;"	f	struct:check_align_len_ratio	access:public	signature:(const BLAST8RESULT &r, int align_len) const
+check_query_align_ratio	blastparser.h	/^struct check_query_align_ratio:public std::binary_function<BLAST8RESULT, int, bool>$/;"	s	inherits:std::binary_function
+check_query_align_ratio::operator ()	blastparser.h	/^  bool operator() (const BLAST8RESULT &r, int align_ratio ) const$/;"	f	struct:check_query_align_ratio	access:public	signature:(const BLAST8RESULT &r, int align_ratio ) const
+check_query_in_middle	blastparser.h	/^struct check_query_in_middle:public std::unary_function< vector<BLAST8RESULT>::iterator, bool>$/;"	s	inherits:std::unary_function
+check_query_in_middle::operator ()	blastparser.h	/^inline	bool operator()(const vector<BLAST8RESULT>::iterator r) const$/;"	f	struct:check_query_in_middle	access:public	signature:(const vector<BLAST8RESULT>::iterator r) const
+check_qurey_len	blastparser.h	/^struct check_qurey_len:public std::binary_function<BLAST8RESULT,int,bool>$/;"	s	inherits:std::binary_function
+check_qurey_len::operator ()	blastparser.h	/^inline	bool operator()(const BLAST8RESULT &r, int query_len) const$/;"	f	struct:check_qurey_len	access:public	signature:(const BLAST8RESULT &r, int query_len) const
+check_sbjct_align_ratio	blastparser.h	/^struct check_sbjct_align_ratio:public std::binary_function<BLAST8RESULT, int, bool>$/;"	s	inherits:std::binary_function
+check_sbjct_align_ratio::operator ()	blastparser.h	/^  bool operator() (const BLAST8RESULT &r, int align_ratio ) const$/;"	f	struct:check_sbjct_align_ratio	access:public	signature:(const BLAST8RESULT &r, int align_ratio ) const
+check_sbjct_len	blastparser.h	/^struct check_sbjct_len:public std::binary_function<BLAST8RESULT,int,bool>$/;"	s	inherits:std::binary_function
+check_sbjct_len::operator ()	blastparser.h	/^inline	bool operator()(const BLAST8RESULT &r, int sbjct_len) const$/;"	f	struct:check_sbjct_len	access:public	signature:(const BLAST8RESULT &r, int sbjct_len) const
+cleanSeq	DNA.cpp	/^void fastaDNA::cleanSeq()$/;"	f	class:fastaDNA	signature:()
+cleanSeq	DNA.h	/^  void cleanSeq(); \/\/ clean the sequence, remove non "AGCT" charactors$/;"	p	class:fastaDNA	access:public	signature:()
+clear	DNA.cpp	/^void DNA::clear()$/;"	f	class:DNA	signature:()
+clear	DNA.h	/^	void clear();$/;"	p	class:DNA	access:public	signature:()
+codon_start	DNA.h	/^  int  codon_start;$/;"	m	class:CDS	access:public
+compliment_nucleotide	general.cpp	/^char compliment_nucleotide(char ch) {$/;"	f	signature:(char ch)
+compliment_nucleotide	general.h	/^char compliment_nucleotide(char ch);$/;"	p	signature:(char ch)
+db_xref	DNA.h	/^  string db_xref;$/;"	m	class:CDS	access:public
+depth	DNA.h	/^    map<SEQID,DEPTH> 	depth;$/;"	m	class:DNA	access:public
+description	DNA.h	/^  string description;$/;"	m	class:fastaDNA	access:public
+equal_by_QueryID	blastparser.h	/^struct equal_by_QueryID$/;"	s
+equal_by_QueryID::operator ()	blastparser.h	/^  inline bool operator() (const BLAST8RESULT &r1, const BLAST8RESULT &r2 ) const$/;"	f	struct:equal_by_QueryID	access:public	signature:(const BLAST8RESULT &r1, const BLAST8RESULT &r2 ) const
+equal_by_QueryID_QStart	blastparser.h	/^struct equal_by_QueryID_QStart$/;"	s
+equal_by_QueryID_QStart::operator ()	blastparser.h	/^  bool operator() (const BLAST8RESULT &r1, const BLAST8RESULT &r2 ) const$/;"	f	struct:equal_by_QueryID_QStart	access:public	signature:(const BLAST8RESULT &r1, const BLAST8RESULT &r2 ) const
+equal_by_QueryID_SStart	blastparser.h	/^struct equal_by_QueryID_SStart$/;"	s
+equal_by_QueryID_SStart::operator ()	blastparser.h	/^  bool operator() (const BLAST8RESULT &r1, const BLAST8RESULT &r2 ) const$/;"	f	struct:equal_by_QueryID_SStart	access:public	signature:(const BLAST8RESULT &r1, const BLAST8RESULT &r2 ) const
+equal_by_SubjectID	blastparser.h	/^struct equal_by_SubjectID$/;"	s
+equal_by_SubjectID::operator ()	blastparser.h	/^  inline bool operator() (const BLAST8RESULT &r1, const BLAST8RESULT &r2 ) const$/;"	f	struct:equal_by_SubjectID	access:public	signature:(const BLAST8RESULT &r1, const BLAST8RESULT &r2 ) const
+equal_by_description	DNA.h	/^struct equal_by_description$/;"	s
+equal_by_description::operator ()	DNA.h	/^	inline bool operator() (const fastaDNA& f1, const fastaDNA& f2) const$/;"	f	struct:equal_by_description	access:public	signature:(const fastaDNA& f1, const fastaDNA& f2) const
+fastaDNA	DNA.cpp	/^fastaDNA::fastaDNA( const fastaDNA &other_fastadna):$/;"	f	class:fastaDNA	signature:( const fastaDNA &other_fastadna)
+fastaDNA	DNA.cpp	/^fastaDNA::fastaDNA() {$/;"	f	class:fastaDNA	signature:()
+fastaDNA	DNA.h	/^  fastaDNA(); \/\/ constructor$/;"	p	class:fastaDNA	access:public	signature:()
+fastaDNA	DNA.h	/^  fastaDNA(const fastaDNA& other_fastadna); \/\/ copy constructor$/;"	p	class:fastaDNA	access:public	signature:(const fastaDNA& other_fastadna)
+fastaDNA	DNA.h	/^class fastaDNA$/;"	c
+fastaDNA::assemble	DNA.h	/^  fastaDNA assemble(fastaDNA c1, fastaDNA c2, int minmatch);$/;"	p	class:fastaDNA	access:public	signature:(fastaDNA c1, fastaDNA c2, int minmatch)
+fastaDNA::cleanSeq	DNA.cpp	/^void fastaDNA::cleanSeq()$/;"	f	class:fastaDNA	signature:()
+fastaDNA::cleanSeq	DNA.h	/^  void cleanSeq(); \/\/ clean the sequence, remove non "AGCT" charactors$/;"	p	class:fastaDNA	access:public	signature:()
+fastaDNA::description	DNA.h	/^  string description;$/;"	m	class:fastaDNA	access:public
+fastaDNA::fastaDNA	DNA.cpp	/^fastaDNA::fastaDNA( const fastaDNA &other_fastadna):$/;"	f	class:fastaDNA	signature:( const fastaDNA &other_fastadna)
+fastaDNA::fastaDNA	DNA.cpp	/^fastaDNA::fastaDNA() {$/;"	f	class:fastaDNA	signature:()
+fastaDNA::fastaDNA	DNA.h	/^  fastaDNA(); \/\/ constructor$/;"	p	class:fastaDNA	access:public	signature:()
+fastaDNA::fastaDNA	DNA.h	/^  fastaDNA(const fastaDNA& other_fastadna); \/\/ copy constructor$/;"	p	class:fastaDNA	access:public	signature:(const fastaDNA& other_fastadna)
+fastaDNA::id	DNA.h	/^  string id;$/;"	m	class:fastaDNA	access:public
+fastaDNA::initial	DNA.cpp	/^void fastaDNA::initial()$/;"	f	class:fastaDNA	signature:()
+fastaDNA::initial	DNA.h	/^  void initial(); \/\/ clear the content of object$/;"	p	class:fastaDNA	access:public	signature:()
+fastaDNA::length	DNA.cpp	/^int fastaDNA::length()$/;"	f	class:fastaDNA	signature:()
+fastaDNA::length	DNA.h	/^  int length();$/;"	p	class:fastaDNA	access:public	signature:()
+fastaDNA::longerThan	DNA.cpp	/^bool fastaDNA::longerThan(int input_len)$/;"	f	class:fastaDNA	signature:(int input_len)
+fastaDNA::longerThan	DNA.h	/^  bool longerThan(int input_len);$/;"	p	class:fastaDNA	access:public	signature:(int input_len)
+fastaDNA::reverse_compliment	DNA.cpp	/^void fastaDNA::reverse_compliment()$/;"	f	class:fastaDNA	signature:()
+fastaDNA::reverse_compliment	DNA.h	/^  void reverse_compliment(); \/\/ return the reverse compliment$/;"	p	class:fastaDNA	access:public	signature:()
+fastaDNA::seq	DNA.h	/^  string seq;$/;"	m	class:fastaDNA	access:public
+fastaDNA::set_description	DNA.cpp	/^void fastaDNA::set_description(string input_description)$/;"	f	class:fastaDNA	signature:(string input_description)
+fastaDNA::set_description	DNA.h	/^  void set_description(string input_description);$/;"	p	class:fastaDNA	access:public	signature:(string input_description)
+fastaDNA::set_id	DNA.cpp	/^void fastaDNA::set_id(string input_id)$/;"	f	class:fastaDNA	signature:(string input_id)
+fastaDNA::set_id	DNA.h	/^  void set_id(string input_id);$/;"	p	class:fastaDNA	access:public	signature:(string input_id)
+fastaDNA::set_seq	DNA.cpp	/^void fastaDNA::set_seq(string input_seq)$/;"	f	class:fastaDNA	signature:(string input_seq)
+fastaDNA::set_seq	DNA.h	/^  void set_seq(string input_seq);$/;"	p	class:fastaDNA	access:public	signature:(string input_seq)
+fastaDNA::shorterThan	DNA.cpp	/^bool fastaDNA::shorterThan(int input_len)$/;"	f	class:fastaDNA	signature:(int input_len)
+fastaDNA::shorterThan	DNA.h	/^  bool shorterThan(int input_len);$/;"	p	class:fastaDNA	access:public	signature:(int input_len)
+gap1_end_pos	blastparser.h	/^	int gap1_end_pos;$/;"	m	class:single_gap	access:public
+gap1_start_pos	blastparser.h	/^	int	gap1_start_pos;$/;"	m	class:single_gap	access:public
+gap2_end_pos	blastparser.h	/^	int gap2_end_pos;$/;"	m	class:single_gap	access:public
+gap2_start_pos	blastparser.h	/^	int	gap2_start_pos;$/;"	m	class:single_gap	access:public
+gene	DNA.h	/^  string gene;$/;"	m	class:CDS	access:public
+getAlignMatrix	alignment.cpp	/^void Alignment::getAlignMatrix()$/;"	f	class:Alignment	signature:()
+getAlignMatrix	alignment.h	/^	void getAlignMatrix();$/;"	p	class:Alignment	access:public	signature:()
+getCDSNum	DNA.cpp	/^int DNA::getCDSNum()$/;"	f	class:DNA	signature:()
+getCDSNum	DNA.h	/^    int  getCDSNum();$/;"	p	class:DNA	access:public	signature:()
+getCDSSeq	DNA.cpp	/^fastaDNA DNA::getCDSSeq( const int& chain_index, const int& cds_index)$/;"	f	class:DNA	signature:( const int& chain_index, const int& cds_index)
+getCDSSeq	DNA.h	/^    fastaDNA getCDSSeq(const int& chain_index, const int& cds_index);$/;"	p	class:DNA	access:public	signature:(const int& chain_index, const int& cds_index)
+getChain	DNA.cpp	/^fastaDNA DNA::getChain(const int& index)$/;"	f	class:DNA	signature:(const int& index)
+getChain	DNA.h	/^    fastaDNA getChain(const int& chain_index);$/;"	p	class:DNA	access:public	signature:(const int& chain_index)
+getChainNum	DNA.cpp	/^int DNA::getChainNum()$/;"	f	class:DNA	signature:()
+getChainNum	DNA.h	/^    int  getChainNum();$/;"	p	class:DNA	access:public	signature:()
+getGapExtPenalty	matrix.h	/^	int getGapExtPenalty() { return GapExtPenalty; };$/;"	f	class:NUC44	access:public	signature:()
+getGapPenalty	matrix.h	/^	int getGapPenalty()   { return GapPenalty; };$/;"	f	class:NUC44	access:public	signature:()
+getNuc44Score	matrix.cpp	/^int NUC44::getNuc44Score(int entry1,int entry2) const$/;"	f	class:NUC44	signature:(int entry1,int entry2) const
+getNuc44Score	matrix.h	/^	int getNuc44Score(int entry1, int entry2) const;$/;"	p	class:NUC44	access:public	signature:(int entry1, int entry2) const
+getNucIndex	matrix.cpp	/^int NUC44::getNucIndex(string input_nuc)$/;"	f	class:NUC44	signature:(string input_nuc)
+getNucIndex	matrix.h	/^	int getNucIndex(string input_nuc);$/;"	p	class:NUC44	access:public	signature:(string input_nuc)
+getOligo2Id	DNA.cpp	/^bool DNA::getOligo2Id(string input_oligo, vector<fastaDNA>::iterator input_it)$/;"	f	class:DNA	signature:(string input_oligo, vector<fastaDNA>::iterator input_it)
+getOligo2Id	DNA.h	/^    bool getOligo2Id(string input_oligo, vector<fastaDNA>::iterator input_it);$/;"	p	class:DNA	access:public	signature:(string input_oligo, vector<fastaDNA>::iterator input_it)
+getOligoNum	DNA.cpp	/^void DNA::getOligoNum()$/;"	f	class:DNA	signature:()
+getOligoNum	DNA.h	/^    void getOligoNum();$/;"	p	class:DNA	access:public	signature:()
+getRandNum	general.cpp	/^int* getRandNum(int upper_bound,int numbers)$/;"	f	signature:(int upper_bound,int numbers)
+getRandNum	general.h	/^int* getRandNum(int upper_bound,int numbers);$/;"	p	signature:(int upper_bound,int numbers)
+getRandSeq	DNA.cpp	/^void getRandSeq(int input_len,int input_coverage, DNA &input_dna,DNA *out_dna)$/;"	f	signature:(int input_len,int input_coverage, DNA &input_dna,DNA *out_dna)
+getRandSeq	DNA.h	/^void getRandSeq(int input_len,int input_coverage, DNA &input_dna,DNA *out_dna);$/;"	p	signature:(int input_len,int input_coverage, DNA &input_dna,DNA *out_dna)
+id	DNA.h	/^  string id;$/;"	m	class:CDS	access:public
+id	DNA.h	/^  string id;$/;"	m	class:fastaDNA	access:public
+indices	DNA.h	/^  pair<int, int> indices;$/;"	m	class:CDS	access:public
+initial	DNA.cpp	/^void CDS::initial()$/;"	f	class:CDS	signature:()
+initial	DNA.cpp	/^void fastaDNA::initial()$/;"	f	class:fastaDNA	signature:()
+initial	DNA.h	/^  void initial(); \/\/ clear the content of object$/;"	p	class:fastaDNA	access:public	signature:()
+initial	DNA.h	/^  void initial();$/;"	p	class:CDS	access:public	signature:()
+length	DNA.cpp	/^int fastaDNA::length()$/;"	f	class:fastaDNA	signature:()
+length	DNA.h	/^  int length();$/;"	p	class:fastaDNA	access:public	signature:()
+less_by_QueryID	blastparser.h	/^struct less_by_QueryID$/;"	s
+less_by_QueryID::operator ()	blastparser.h	/^  inline bool operator() (const BLAST8RESULT &r1, const BLAST8RESULT &r2 ) const$/;"	f	struct:less_by_QueryID	access:public	signature:(const BLAST8RESULT &r1, const BLAST8RESULT &r2 ) const
+less_by_QueryID_QStart	blastparser.h	/^struct less_by_QueryID_QStart$/;"	s
+less_by_QueryID_QStart::operator ()	blastparser.h	/^ bool operator() (const BLAST8RESULT &r1, const BLAST8RESULT &r2) const$/;"	f	struct:less_by_QueryID_QStart	access:public	signature:(const BLAST8RESULT &r1, const BLAST8RESULT &r2) const
+less_by_QueryID_SbjctID	blastparser.h	/^struct less_by_QueryID_SbjctID$/;"	s
+less_by_QueryID_SbjctID::operator ()	blastparser.h	/^  inline bool operator() (const BLAST8RESULT &r1, const BLAST8RESULT &r2 ) const$/;"	f	struct:less_by_QueryID_SbjctID	access:public	signature:(const BLAST8RESULT &r1, const BLAST8RESULT &r2 ) const
+less_by_SbjctID_SStart	blastparser.h	/^struct less_by_SbjctID_SStart$/;"	s
+less_by_SbjctID_SStart::operator ()	blastparser.h	/^  inline bool operator() (const BLAST8RESULT &r1, const BLAST8RESULT &r2) const$/;"	f	struct:less_by_SbjctID_SStart	access:public	signature:(const BLAST8RESULT &r1, const BLAST8RESULT &r2) const
+less_by_description	DNA.h	/^struct less_by_description$/;"	s
+less_by_description::operator ()	DNA.h	/^	inline bool operator() (const fastaDNA& f1, const fastaDNA& f2) const$/;"	f	struct:less_by_description	access:public	signature:(const fastaDNA& f1, const fastaDNA& f2) const
+locus_tag	DNA.h	/^  string locus_tag;$/;"	m	class:CDS	access:public
+long_reads	blastparser.h	/^	DNA	long_reads;$/;"	m	class:single_gap	access:public
+longerThan	DNA.cpp	/^bool fastaDNA::longerThan(int input_len)$/;"	f	class:fastaDNA	signature:(int input_len)
+longerThan	DNA.h	/^  bool longerThan(int input_len);$/;"	p	class:fastaDNA	access:public	signature:(int input_len)
+map_DNA	DNA.h	/^typedef map<string, string> map_DNA;$/;"	t
+my_chopSpace	general.cpp	/^int my_chopSpace(char *s) {$/;"	f	signature:(char *s)
+my_chopSpace	general.h	/^int my_chopSpace(char *s);$/;"	p	signature:(char *s)
+my_getopt	general.h	/^void my_getopt(int argc, char *argv[]);$/;"	p	signature:(int argc, char *argv[])
+my_lowercase	general.cpp	/^int my_lowercase(char *s) {$/;"	f	signature:(char *s)
+my_lowercase	general.h	/^int my_lowercase(char *s);$/;"	p	signature:(char *s)
+myswap	general.h	/^void myswap (Type& first,Type& second)$/;"	f	signature:(Type& first,Type& second)
+not_nucleotide	DNA.cpp	/^bool not_nucleotide(char ch)$/;"	f	signature:(char ch)
+nuc44	alignment.h	/^	NUC44 nuc44;$/;"	m	class:Alignment	access:private
+oligoCount	DNA.cpp	/^void DNA::oligoCount(const int& chain_index, const int& oligo_num)$/;"	f	class:DNA	signature:(const int& chain_index, const int& oligo_num)
+oligoCount	DNA.h	/^    void oligoCount(const int& chain_index, const int& oligo_num);$/;"	p	class:DNA	access:public	signature:(const int& chain_index, const int& oligo_num)
+oligo_counter	DNA.h	/^    map<string,int> 	oligo_counter;$/;"	m	class:DNA	access:public
+operator ()	DNA.h	/^	inline bool operator() (const fastaDNA& f1, const fastaDNA& f2) const$/;"	f	struct:equal_by_description	access:public	signature:(const fastaDNA& f1, const fastaDNA& f2) const
+operator ()	DNA.h	/^	inline bool operator() (const fastaDNA& f1, const fastaDNA& f2) const$/;"	f	struct:less_by_description	access:public	signature:(const fastaDNA& f1, const fastaDNA& f2) const
+operator ()	blastparser.h	/^  bool operator() (const BLAST8RESULT &r, int align_ratio ) const$/;"	f	struct:check_query_align_ratio	access:public	signature:(const BLAST8RESULT &r, int align_ratio ) const
+operator ()	blastparser.h	/^  bool operator() (const BLAST8RESULT &r, int align_ratio ) const$/;"	f	struct:check_sbjct_align_ratio	access:public	signature:(const BLAST8RESULT &r, int align_ratio ) const
+operator ()	blastparser.h	/^  bool operator() (const BLAST8RESULT &r1, const BLAST8RESULT &r2 ) const$/;"	f	struct:equal_by_QueryID_QStart	access:public	signature:(const BLAST8RESULT &r1, const BLAST8RESULT &r2 ) const
+operator ()	blastparser.h	/^  bool operator() (const BLAST8RESULT &r1, const BLAST8RESULT &r2 ) const$/;"	f	struct:equal_by_QueryID_SStart	access:public	signature:(const BLAST8RESULT &r1, const BLAST8RESULT &r2 ) const
+operator ()	blastparser.h	/^  bool operator() (const BLAST8RESULT &r1, const BLAST8RESULT &r2) const$/;"	f	struct:rm_repeat_by_QStart_contig	access:public	signature:(const BLAST8RESULT &r1, const BLAST8RESULT &r2) const
+operator ()	blastparser.h	/^  bool operator() (const BLAST8RESULT &r1, const BLAST8RESULT &r2) const$/;"	f	struct:rm_repeat_by_SStart_contig	access:public	signature:(const BLAST8RESULT &r1, const BLAST8RESULT &r2) const
+operator ()	blastparser.h	/^  bool operator() (const BLAST8RESULT &r1, const BLAST8RESULT &r2) const$/;"	f	struct:rm_repeat_by_SStart_read	access:public	signature:(const BLAST8RESULT &r1, const BLAST8RESULT &r2) const
+operator ()	blastparser.h	/^  inline bool operator() (const BLAST8RESULT &r1, const BLAST8RESULT &r2 ) const$/;"	f	struct:equal_by_QueryID	access:public	signature:(const BLAST8RESULT &r1, const BLAST8RESULT &r2 ) const
+operator ()	blastparser.h	/^  inline bool operator() (const BLAST8RESULT &r1, const BLAST8RESULT &r2 ) const$/;"	f	struct:equal_by_SubjectID	access:public	signature:(const BLAST8RESULT &r1, const BLAST8RESULT &r2 ) const
+operator ()	blastparser.h	/^  inline bool operator() (const BLAST8RESULT &r1, const BLAST8RESULT &r2 ) const$/;"	f	struct:less_by_QueryID	access:public	signature:(const BLAST8RESULT &r1, const BLAST8RESULT &r2 ) const
+operator ()	blastparser.h	/^  inline bool operator() (const BLAST8RESULT &r1, const BLAST8RESULT &r2 ) const$/;"	f	struct:less_by_QueryID_SbjctID	access:public	signature:(const BLAST8RESULT &r1, const BLAST8RESULT &r2 ) const
+operator ()	blastparser.h	/^  inline bool operator() (const BLAST8RESULT &r1, const BLAST8RESULT &r2) const$/;"	f	struct:less_by_SbjctID_SStart	access:public	signature:(const BLAST8RESULT &r1, const BLAST8RESULT &r2) const
+operator ()	blastparser.h	/^ bool operator() (const BLAST8RESULT &r1, const BLAST8RESULT &r2) const$/;"	f	struct:less_by_QueryID_QStart	access:public	signature:(const BLAST8RESULT &r1, const BLAST8RESULT &r2) const
+operator ()	blastparser.h	/^inline	bool operator()(const BLAST8RESULT &r, int align_identity) const$/;"	f	struct:check_align_identity	access:public	signature:(const BLAST8RESULT &r, int align_identity) const
+operator ()	blastparser.h	/^inline	bool operator()(const BLAST8RESULT &r, int align_len) const$/;"	f	struct:check_align_len	access:public	signature:(const BLAST8RESULT &r, int align_len) const
+operator ()	blastparser.h	/^inline	bool operator()(const BLAST8RESULT &r, int align_len) const$/;"	f	struct:check_align_len_ratio	access:public	signature:(const BLAST8RESULT &r, int align_len) const
+operator ()	blastparser.h	/^inline	bool operator()(const BLAST8RESULT &r, int query_len) const$/;"	f	struct:check_qurey_len	access:public	signature:(const BLAST8RESULT &r, int query_len) const
+operator ()	blastparser.h	/^inline	bool operator()(const BLAST8RESULT &r, int sbjct_len) const$/;"	f	struct:check_sbjct_len	access:public	signature:(const BLAST8RESULT &r, int sbjct_len) const
+operator ()	blastparser.h	/^inline	bool operator()(const vector<BLAST8RESULT>::iterator r) const$/;"	f	struct:check_query_in_middle	access:public	signature:(const vector<BLAST8RESULT>::iterator r) const
+protein_id	DNA.h	/^  string protein_id;$/;"	m	class:CDS	access:public
+qual	DNA.h	/^    map<SEQID,QUAL> 	qual;$/;"	m	class:DNA	access:public
+readFasta	DNA.cpp	/^void DNA::readFasta( char *file ) \/\/ read Fasta format sequences$/;"	f	class:DNA	signature:( char *file )
+readFasta	DNA.h	/^    void readFasta(char *file); \/\/ read Fasta format sequence$/;"	p	class:DNA	access:public	signature:(char *file)
+readFastaMap	DNA.cpp	/^void readFastaMap(char *file, map_DNA& out_seq_map) \/\/ read Fasta format sequence$/;"	f	signature:(char *file, map_DNA& out_seq_map)
+readFastaMap	DNA.h	/^void readFastaMap(char *file, map_DNA& out_seq_map); \/\/ read Fasta format sequence$/;"	p	signature:(char *file, map_DNA& out_seq_map)
+readFastqMap	DNA.cpp	/^void readFastqMap(char *file, map_DNA& out_seq_map) \/\/ read Fastq format sequence$/;"	f	signature:(char *file, map_DNA& out_seq_map)
+readFastqMap	DNA.h	/^void readFastqMap(char *file, map_DNA& out_seq_map); \/\/ read Fastq format sequence$/;"	p	signature:(char *file, map_DNA& out_seq_map)
+readGenBank	DNA.cpp	/^void DNA::readGenBank ( char* file )$/;"	f	class:DNA	signature:( char* file )
+readGenBank	DNA.h	/^    void readGenBank(char *file);\/\/ read GenBank format sequence$/;"	p	class:DNA	access:public	signature:(char *file)
+readQual	DNA.cpp	/^void DNA::readQual(char* file)$/;"	f	class:DNA	signature:(char* file)
+readQual	DNA.h	/^    void readQual(char* file);$/;"	p	class:DNA	access:public	signature:(char* file)
+reads_set	blastparser.h	/^  bool 						reads_set, ref_set;$/;"	m	class:BlastParser	access:public
+real_gap_size	blastparser.h	/^	int	real_gap_size;$/;"	m	class:single_gap	access:public
+recomplement	DNA.h	/^  bool recomplement;$/;"	m	class:CDS	access:public
+ref_set	blastparser.h	/^  bool 						reads_set, ref_set;$/;"	m	class:BlastParser	access:public
+reverse_compliment	DNA.cpp	/^void fastaDNA::reverse_compliment()$/;"	f	class:fastaDNA	signature:()
+reverse_compliment	DNA.h	/^  void reverse_compliment(); \/\/ return the reverse compliment$/;"	p	class:fastaDNA	access:public	signature:()
+rm_repeat_by_QStart_contig	blastparser.h	/^struct rm_repeat_by_QStart_contig$/;"	s
+rm_repeat_by_QStart_contig::operator ()	blastparser.h	/^  bool operator() (const BLAST8RESULT &r1, const BLAST8RESULT &r2) const$/;"	f	struct:rm_repeat_by_QStart_contig	access:public	signature:(const BLAST8RESULT &r1, const BLAST8RESULT &r2) const
+rm_repeat_by_SStart_contig	blastparser.h	/^struct rm_repeat_by_SStart_contig$/;"	s
+rm_repeat_by_SStart_contig::operator ()	blastparser.h	/^  bool operator() (const BLAST8RESULT &r1, const BLAST8RESULT &r2) const$/;"	f	struct:rm_repeat_by_SStart_contig	access:public	signature:(const BLAST8RESULT &r1, const BLAST8RESULT &r2) const
+rm_repeat_by_SStart_read	blastparser.h	/^struct rm_repeat_by_SStart_read$/;"	s
+rm_repeat_by_SStart_read::operator ()	blastparser.h	/^  bool operator() (const BLAST8RESULT &r1, const BLAST8RESULT &r2) const$/;"	f	struct:rm_repeat_by_SStart_read	access:public	signature:(const BLAST8RESULT &r1, const BLAST8RESULT &r2) const
+seq	DNA.h	/^  string seq;$/;"	m	class:fastaDNA	access:public
+setGapExtPenalty	matrix.cpp	/^void NUC44::setGapExtPenalty( int input_gapextpen)$/;"	f	class:NUC44	signature:( int input_gapextpen)
+setGapExtPenalty	matrix.h	/^	void setGapExtPenalty( int input_gapextpen);$/;"	p	class:NUC44	access:public	signature:( int input_gapextpen)
+setGapPenalty	matrix.cpp	/^void NUC44::setGapPenalty( int input_gappen)$/;"	f	class:NUC44	signature:( int input_gappen)
+setGapPenalty	matrix.h	/^	void setGapPenalty( int input_gappen);$/;"	p	class:NUC44	access:public	signature:( int input_gappen)
+set_description	DNA.cpp	/^void fastaDNA::set_description(string input_description)$/;"	f	class:fastaDNA	signature:(string input_description)
+set_description	DNA.h	/^  void set_description(string input_description);$/;"	p	class:fastaDNA	access:public	signature:(string input_description)
+set_id	DNA.cpp	/^void fastaDNA::set_id(string input_id)$/;"	f	class:fastaDNA	signature:(string input_id)
+set_id	DNA.h	/^  void set_id(string input_id);$/;"	p	class:fastaDNA	access:public	signature:(string input_id)
+set_indices	DNA.cpp	/^void CDS::set_indices(int input_pos1,int input_pos2)$/;"	f	class:CDS	signature:(int input_pos1,int input_pos2)
+set_indices	DNA.h	/^  void set_indices(int input_pos1,int input_pos2);$/;"	p	class:CDS	access:public	signature:(int input_pos1,int input_pos2)
+set_seq	DNA.cpp	/^void fastaDNA::set_seq(string input_seq)$/;"	f	class:fastaDNA	signature:(string input_seq)
+set_seq	DNA.h	/^  void set_seq(string input_seq);$/;"	p	class:fastaDNA	access:public	signature:(string input_seq)
+short_reads	blastparser.h	/^	DNA	short_reads;$/;"	m	class:single_gap	access:public
+shorterThan	DNA.cpp	/^bool fastaDNA::shorterThan(int input_len)$/;"	f	class:fastaDNA	signature:(int input_len)
+shorterThan	DNA.h	/^  bool shorterThan(int input_len);$/;"	p	class:fastaDNA	access:public	signature:(int input_len)
+single_gap	blastparser.h	/^	single_gap()$/;"	f	class:single_gap	access:public	signature:()
+single_gap	blastparser.h	/^class single_gap$/;"	c
+single_gap::gap1_end_pos	blastparser.h	/^	int gap1_end_pos;$/;"	m	class:single_gap	access:public
+single_gap::gap1_start_pos	blastparser.h	/^	int	gap1_start_pos;$/;"	m	class:single_gap	access:public
+single_gap::gap2_end_pos	blastparser.h	/^	int gap2_end_pos;$/;"	m	class:single_gap	access:public
+single_gap::gap2_start_pos	blastparser.h	/^	int	gap2_start_pos;$/;"	m	class:single_gap	access:public
+single_gap::long_reads	blastparser.h	/^	DNA	long_reads;$/;"	m	class:single_gap	access:public
+single_gap::real_gap_size	blastparser.h	/^	int	real_gap_size;$/;"	m	class:single_gap	access:public
+single_gap::short_reads	blastparser.h	/^	DNA	short_reads;$/;"	m	class:single_gap	access:public
+single_gap::single_gap	blastparser.h	/^	single_gap()$/;"	f	class:single_gap	access:public	signature:()
+trimBeginEndX	DNA.cpp	/^void DNA::trimBeginEndX(int short_len)$/;"	f	class:DNA	signature:(int short_len)
+trimBeginEndX	DNA.h	/^    void trimBeginEndX(int short_len);$/;"	p	class:DNA	access:public	signature:(int short_len)
+writeFasta	DNA.cpp	/^void DNA::writeFasta ( char* file )$/;"	f	class:DNA	signature:( char* file )
+writeFasta	DNA.h	/^    void writeFasta(char *file); \/\/ write Fasta format sequence$/;"	p	class:DNA	access:public	signature:(char *file)
+writeFastaMap	DNA.cpp	/^void writeFastaMap ( char* file, map_DNA& o_seq )$/;"	f	signature:( char* file, map_DNA& o_seq )
+writeFastaMap	DNA.h	/^void writeFastaMap(char *file, map_DNA& out_seq_map); \/\/ write Fasta format sequence$/;"	p	signature:(char *file, map_DNA& out_seq_map)
+writeQual	DNA.cpp	/^void DNA::writeQual(char *file)$/;"	f	class:DNA	signature:(char *file)
+writeQual	DNA.h	/^    void writeQual(char *file);$/;"	p	class:DNA	access:public	signature:(char *file)
+~BlastParser	blastparser.cpp	/^BlastParser::~BlastParser()$/;"	f	class:BlastParser	signature:()
+~BlastParser	blastparser.h	/^    ~BlastParser();$/;"	p	class:BlastParser	access:public	signature:()
+~NUC44	matrix.cpp	/^NUC44::~NUC44()$/;"	f	class:NUC44	signature:()
+~NUC44	matrix.h	/^	~NUC44();$/;"	p	class:NUC44	access:public	signature:()
